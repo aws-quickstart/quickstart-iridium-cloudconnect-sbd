@@ -4,24 +4,45 @@ Description: "CloudFormation template for creating SQS queues and cross-account 
 Metadata:
   QuickStartDocumentation:
     EntrypointName: "Launch into your desired region"
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Network configuration"
+        Parameters:
+          - IridiumRoleARN
+          - MobileOriginatedQueueName
+          - MobileTerminatedQueueName
+          - MobileTerminatedErrorQueueName
+          - MobileTerminatedConfirmationQueueName
+    ParameterLabels:
+      IridiumRoleARN:
+        default: Iridium IAM role ARN
+      MobileOriginatedQueueName:
+        default: Mobile-originated queue name
+      MobileTerminatedQueueName:
+        default: Mobile-terminated queue name
+      MobileTerminatedErrorQueueName:
+        default: Mobile-terminated error queue name
+      MobileTerminatedConfirmationQueueName:
+        default: Mobile-terminated confirmation queue name
 Parameters:
   IridiumRoleARN:
-    Description: The Amazon Resource Number (ARN) of the role within the Iridium AWS account 
+    Description: The Amazon Resource Number (ARN) of the role within the Iridium AWS account
     Type: String
   MobileOriginatedQueueName:
-    Description: The name for the mobile-originated queue in SQS 
+    Description: The name for the mobile-originated queue in SQS
     Type: String
     Default: ICCMO.fifo
   MobileTerminatedQueueName:
-    Description: The name for the mobile-terminated queue in SQS 
+    Description: The name for the mobile-terminated queue in SQS
     Type: String
     Default: ICCMT.fifo
   MobileTerminatedConfirmationQueueName:
-    Description: The name for the mobile-terminated confirmation queue in SQS 
+    Description: The name for the mobile-terminated confirmation queue in SQS
     Type: String
     Default: ICCMTConfirmation.fifo
   MobileTerminatedErrorQueueName:
-    Description: The name for the mobile-terminated confirmation queue in SQS 
+    Description: The name for the mobile-terminated confirmation queue in SQS
     Type: String
     Default: ICCMTErrors.fifo
 Rules:
@@ -53,34 +74,34 @@ Resources:
     Properties:
       FifoQueue: True
       QueueName: !Ref MobileTerminatedErrorQueueName
-  SQSQueueCrossAccountPolicy: 
+  SQSQueueCrossAccountPolicy:
     Type: AWS::IAM::Policy
-    DependsOn: 
+    DependsOn:
     - MobileOriginatedSQSQueue
     - SQSCrossAccountRole
-    Properties: 
+    Properties:
       PolicyName: "allow-sqs-send-message"
-      PolicyDocument: 
+      PolicyDocument:
         Version: "2012-10-17"
-        Statement: 
-          - 
+        Statement:
+          -
             Effect: Allow
-            Action: 
+            Action:
               - sqs:SendMessage
               - sqs:ReceiveMessage
               - sqs:DeleteMessage
             Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileOriginatedSQSQueue.QueueName}"
-          - 
+          -
             Effect: Allow
-            Action: 
+            Action:
               - sqs:SendMessage
             Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedConfirmationSQSQueue.QueueName}"
-          - 
+          -
             Effect: Allow
-            Action: 
+            Action:
               - sqs:SendMessage
             Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedErrorSQSQueue.QueueName}"
-      Roles: 
+      Roles:
       - !Ref 'SQSCrossAccountRole'
   SQSCrossAccountRole:
     Type: AWS::IAM::Role
