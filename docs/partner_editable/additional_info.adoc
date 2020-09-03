@@ -1,23 +1,496 @@
 // Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
 //Should any sections not be applicable, remove them
 
-== Test the deployment
-// If steps are required to test the deployment, add them here. If not, remove the heading
 
-== Post deployment steps
-// If Post-deployment steps are required, add them here. If not, remove the heading
+=== Interacting with your SQS Queues
 
-== Best practices for using {partner-product-short-name} on AWS
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+AWS provides many ways to interact with the Iridium CloudConnect queues:
 
-_Add any best practices for using the software._
+. Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS CLI^].
 
-== Security
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+. Manually in the AWS console; simply navigate to SQS and view the
+queues.
+. Programmatically, with the many available libraries:
+.. https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[The boto3 library for Python^]
+.. https://aws.amazon.com/sdk-for-net/[The AWS SDK for .NET^]
+.. https://aws.amazon.com/sdk-for-java/[The AWS SDK for Java^]
+.. https://aws.amazon.com/sdk-for-ruby/[The AWS SDK for Ruby^]
+.. and many more.
 
-_Add any security-related information._
+==== Receiving Mobile-Originated Messages
 
-== Other useful information
-//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
+The recommended approach for receiving MO messages is:
 
-_Add any other details that will help the customer use the software on AWS._
+. Long-poll the ICCMO.fifo SQS queue
+. When messages are received:
+.. Process each message (i.e. save to your database)
+.. Delete each message
+
+NOTE: Amazon SQS doesn't automatically delete a message after receiving it for
+you, in case you don't successfully receive the message (for example,
+the consumers can fail or lose connectivity). To delete a message, you
+must send a separate request which acknowledges that you no longer need
+the message because you've successfully received and processed it.
+Refer the AWS Tutorial https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-receive-delete-message.html[Receiving and Deleting a Message from an Amazon SQS Queue^]
+
+```
+# Get the service resource
+sqs = boto3.resource('sqs')
+
+# Get the queue
+queue = sqs.get_queue_by_name(QueueName='ICCMO.fifo')
+
+# Process messages by printing out IMEI, location, and payload
+for message in queue.receive_messages(WaitTimeSeconds=30):
+  header = None
+  location = None
+  payload = None
+  data = json.loads(message.body)
+
+  for iei in data['data']:
+    if data['iei_type'] == 'MO Header IEI':
+      header = data
+    elif data['iei_type'] == 'MO Location Information IEI':
+      location = data
+    elif data['iei_type'] == 'MO Payload IEI':
+      payload = data
+
+    # The message may contain location information
+    if location is not None:
+      print('IMEI {0} location is {1}'.format(
+        header['imei'],
+      location['latitude_longitude'] ))
+
+    # The message may contain a payload
+      if payload is not None:
+      print('IMEI {0} payload of {1} bytes'.format(
+        header['imei'],
+        payload['mo_payload'] ))
+
+# Let the queue know that the message is processed
+message.delete()
+```
+
+==== Sending MT Messages
+
+MT messages are sent asynchronously-you place messages in the ICCMT.fifo
+queue and then poll the ICCMTConfirmation.fifo and ICCMTErrors.fifo
+queues for delivery status information. The recommended approach for the
+management of MT messages is to break it into three separate processes:
+
+. A process for sending MT messages
+.. Uniquely identify each message with an integer
+.. Send the message to the ICCMT.fifo queue
+. A process for checking the ICCMTConfirmation.fifo queue for a response
+.. Just like the recommended approach for MO messages:
+... Process each confirmation message
+... Delete each message
+. A process for checking the ICCMTErrors.fifo queues for a response
+.. Just like the recommended approach for MO messages:
+... Process each error message
+... Delete each message
+
+=== MT Examples
+
+==== _Sending an MT Message_
+
+```
+import boto3
+import json
+import uuid
+# Get the service resource
+sqs = boto3.resource('sqs')
+
+# Get the queues
+mt_queue = sqs.get_queue_by_name(QueueName = 'ICCMT.fifo')
+message = "hello device".encode("utf-8").hex()
+
+# Create a message
+body = {
+  "client_message_id": 123456789,
+  "message": message,
+  "imei": "432143214321432"
+}
+
+deduplication_id = str(uuid.uuid4())
+group_id = str(uuid.uuid4())
+mt_queue.send_message(
+  MessageBody = json.dumps(body),
+  MessageGroupId = group_id,
+  MessageDeduplicationId = deduplication_id
+)
+```
+
+==== _Checking the MTConfirmation.fifo Queue_
+
+```
+# Get the service resource
+sqs = boto3.resource('sqs') # Get the queues
+
+mt_confirmation_queue = sqs.get_queue_by_name(QueueName='ICCMTConfirmation.fifo')
+
+# Check the confirmation queue and, if no message found, check the error queue
+
+for message in mt_confirmation_queue.receive_messages(WaitTimeSeconds=30):
+  data = json.loads(message.body)
+
+  # Status greater than zero indicates success
+  if data['mt_message_status'] > 0:
+    print("Message {0} is queued for delivery to IMEI {1} in position{2}".format(
+      data['unique_client_message_id'],
+      data['imei'],
+      data['mt_message_status']))
+  else:
+    print("Message {0} was not sent to IMEI {0}".format(
+      data['unique_client_message_id'],
+      data['imei']))
+
+# Let the queue know that the message is processed
+message.delete()
+```
+
+==== _Checking the MTErrors.fifo Queue_
+
+```
+# Get the service resource
+sqs = boto3.resource('sqs')
+
+# Get the queues
+mt_errors_queue = sqs.get_queue_by_name(QueueName='ICCMTErrors.fifo')
+
+# Check the confirmation queue and, if no message found, check the errorqueue
+
+for message in mt_errors_queue.receive_messages(WaitTimeSeconds=30):
+  print(message.body)
+
+# Let the queue know that the message is processed
+message.delete()
+```
+
+=== Provisioning
+
+To utilize Iridium CloudConnect, devices must be provisioned for the
+Iridium CloudConnect using Iridium SPNet or Iridium Web Services (IWS).
+The provisioning address is in the format address:port which corresponds
+to the customer origin/destination.
+
+
+==== Provisioning Setting
+
+// aklsdjfklasdf
+//
+// |===
+// |Parameter|Value |Description
+// |CloudConnect IP address |lb1.istcloudconnect.com |Destination IP address for CloudConnect
+// |Port |XXXXXX |Unique number associated with customer
+// |===
+
+=== Data Format
+
+When Iridium CloudConnect processes data from your device, it will put
+it in a JSON object containing additional information about the device,
+and message payload and header information, in the following format.
+This JSON is exchanged between your SQS and the Iridium Gateway through
+CloudConnect.
+
+==== JSON Format
+
+===== _JSON Example_
+
+```
+{
+    "api_version": 1,
+    "data": {
+        "mo_header": {
+            "cdr_reference": 1179650258,
+            "session_status_int": 0,
+            "session_status": "No error.",
+            "momsn": 58939,
+            "mtmsn": 0,
+            "imei": "300334010407160",
+            "time_of_session": "2019-12-16 15:04:09"
+        },
+        "location_information": {
+            "cep_radius": 10,
+            "latitude": "38.52137",
+            "longitude": "-77.12970"
+        },
+        "payload": "746573746d756963"
+    }
+}
+```
+The JSON key:value pairs values align with SBD developer documentation,
+repeated as a reference towards the end of this document. Please consult
+the Iridium SBD developer’s guide as well.
+
+==== Mobile Originated Message Formatting
+
+===== _Mobile Originated Message JSON_
+
+Mobile Originated messages will be translated into the following JSON
+format. For more information about the information held in the fields,
+see the associate MO tables below.
+
+Format:
+
+```
+{
+    "data": {
+        "location_information": {
+            "cep_radius": 2,
+            "latitude": "33.20574",
+            "longitude": "-111.50958"
+        },
+        "mo_header": {
+            "cdr_reference": 1519223194,
+            "imei": "3000010XXXXXXXX",
+            "mtmsn": 0,
+            "momsn": 64588,
+            "session_status": "sbd_session_successful",
+            "time_of_session": "2019-01-25 22:11:07"
+        },
+        "payload": "54657374696e67204d4f2054657874207769746820494343"
+    },
+    "api_version": 1
+}
+```
+
+===== _Top Level MO Keys_
+
+[cols=",",]
+|===
+|location_information |Contains the latitude, longitude, and certainty
+radius.
+
+|mo_header |Contains meta-data about the message including status and
+device id
+
+|payload |Contains the payload of the message
+
+|api_version |Notes the SBD api version, should always be 1
+|===
+
+===== _Location Information_
+
+[cols=",,",]
+|===
+|latitude |Contains the latitude of the device down to thousandths of a
+minute. |Float to the thousandths of a minute
+
+|longitude |Contains the longitude of the device down to thousandths of
+a minute. |Float to the thousandths of a minute
+
+|cep_radius |This field provides an estimate of the accuracy of the
+ISU’s location. |Integer
+|===
+
+===== _MO Header_
+
+[cols=",,",]
+|===
+|cdr_reference |Call Detail Record. The unique identifier for a given
+message in the Iridium Gateway Database. Also known as AutoId |10 digit
+number
+
+|imei |Equipment Identifier. A 15 digit number unique to individual
+devices. Also known as device ID. |15 digit number
+
+|mtmsn |This is the mobile-terminated message sequence number (MTMSN)
+associated with the SBD session. This value is set by the Iridium
+Gateway at the time that an MT message is queued for delivery and is
+unique to each IMEI. It is then sent to the IMEI as part of the MT
+payload transfer. If an MT payload transfer was attempted, the MTMSN
+will be included in the header regardless of the success of the session.
+If the session failed, the payload is still queued for delivery. If no
+MT delivery attempt was made in the session, this value will be zero. |5
+digit number
+
+|momsn |This is the mobile-originated message sequence number (MOMSN)
+associated with the SBD session. This value is set by the IMEI and
+transmitted to the Iridium Gateway as part of every SBD session. It is
+incremented by the IMEI after every successful session. |5 digit number
+
+|session_status |This field provides an indication of success of the SBD
+session between the IMEI and the Iridium Gateway associated with the
+over-the-air payload delivery. |String, included in table below
+
+|time_of_session |This field provides a UTC timestamp of the IMEI
+session between the IMEI and the Iridium Gateway. |timestamp
+|===
+
+===== _MO Session Statuses_
+
+[cols=",,",]
+|===
+|0 |The SBD session completed successfully. |sbd_session_successful
+
+|1 |The MO message transfer, if any, was successful. The MT message
+queued at the Iridium Gateway is too large to be transferred within a
+single SBD session. |mt_message_too_large
+
+|2 |The MO message transfer, if any, was successful. The reported
+location was determined to be of unacceptable quality. This value is
+only applicable to IMEIs using SBD protocol revision 1.
+|unacceptable_quality
+
+|10 |The SBD session timed out before session completion.
+|session_timeout
+
+|12 |The MO message being transferred by the IMEI is too large to be
+transferred within a single SBD session. |mo_message_too_large
+
+|13 |An RF link loss occurred during the SBD session. |rf_link_loss
+
+|14 |An IMEI protocol anomaly occurred during SBD session. |imei_anomaly
+
+|15 |The IMEI is prohibited from accessing the Iridium Gateway.
+|imei_prohibited
+|===
+
+==== Mobile Terminated Message Formatting
+
+===== _Mobile Terminated Message JSON_
+
+Mobile Terminated messages need to be built in the following format. For
+more information about the information held in the fields, see the
+associated MT tables below.
+
+
+```
+{
+  "client_message_id" : "TEST",
+  "message" : "5465737420484558206d657373616765",
+  "imei" : "300125010001100",
+  "flush_mt_queue" : false,
+  "send_ring_alert_no_payload" : false,
+  "high_priority_message" : false,
+  "assign_mtmsn" : false
+}
+```
+
+==== _Bare Minimum_
+```
+{
+  "client_message_id" : 1234,
+  "message" : "68656c6c6f20776f726c64",
+  "imei" : "300234087352917"
+}
+```
+==== _With Priority Specified_
+```
+{
+  "client_message_id" : 9977331,
+  "message" : "68656c6c6f20776f726c64",
+  "imei" : "300234087352917",
+  "priority" : 2
+}
+```
+
+==== All Possible Options
+
+NOTE: See SBD development guide for allowed combinations
+```
+{
+  "client_message_id" : 789012,
+  "message" : "68656c6c6f20776f726c64",
+  "imei" : "300234087352917",
+  "flush_mt_queue" : false,
+  "send_ring_alert_no_payload" : false,
+  "message_priority" : 3,
+  "assign_mtmsn" : false
+}
+```
+
+===== _Top Level MT Keys_
+
+[cols=",,",]
+|===
+|client_message_id |Unique identifier for client messages. |Number or 4
+character string
+
+|message |The payload of the MT message |string
+
+|imei |Unique Equipment Identifier used to determine the device which
+will receive an MT message. |15 digit number
+
+|flush_mt_queue a|
+When this flag is set to true, all payloads in the MT queue for the
+given IMEI are deleted. This provides an integrated method to administer
+MT queues.
+
+When a payload is included in the MT message, it will be queued after
+the currently queued payloads, if any, have been deleted. This enables
+the Vendor Application to maintain a queue depth of one, overwriting any
+previous payload queued.
+
+|Boolean (true, false)
+
+|send_ring_alert_no_payload |When this flag is set to true, the Iridium
+Gateway is directed to send a SBD Ring Alert to the specified IMEI
+within the bounds of normal SBD Ring Alert processing even though no new
+MT message is being queued. |Boolean (true, false)
+
+|high_priority_message |Place the associated MT payload in queue based
+on priority level |Boolean (true, false)
+
+|assign_mtmsn |When this flag is set, the GSS will use the value in the
+Unique ID field in the message header as the MTMSN for the associated MT
+message payload. |Boolean (true, false)
+|===
+
+==== MT Confirmation Message Formatting
+
+===== _Mobile Terminated Confirmation JSON_
+
+MT confirmation messages are presented in the following format. For more
+information about the information held in the fields, see the associated
+MT confirmation tables below.
+
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+:coderay-css: class
+
+```
+{
+  "mt_message_id": 1234512345,
+  "unique_client_message_id": 1234,
+  "imei": 123451234512345,
+  "auto_id_reference": 5432154321,
+  "mt_message_status": -2
+}
+```
+===== _Keys:_
+
+[cols=",",]
+|===
+|mt_message_id |Identifier of the message in the Iridium CloudConnect
+database
+
+|unique_client_message_id |Customer supplied identifier for the message
+
+|imei |Unique Equipment Identifier used to determine the device which
+will receive an MT message.
+
+|auto_id_reference |Unique identifier in the Iridium gateway database
+
+|mt_message_status |Number, see MT confirmation status table.
+|===
+
+===== _MT Confirmation Statuses:_
+
+[cols=",",]
+|===
+|1-50 |Successful, order of message in the MT message queue
+|0 |Successful, no payload in message
+|-1 |Invalid IMEI – too few characters, non-numeric characters
+|-2 |Unknown IMEI – not provisioned on the Iridium Gateway
+|-3 |Payload size exceeded maximum allowed (See Section 1.0)
+|-4 |Payload expected, but none received
+|-5 |MT message queue full (max of 50)
+|-6 |MT resources unavailable
+|-7 |Violation of MT DirectIP protocol error
+|-8 |Ring alerts to the given IMEI are disabled
+|-9 |The given IMEI is not attached (not set to receive ring alerts)
+|-10 |Source IP address rejected by MT filter
+|-11 |MTMSN value is out of range (valid range is 1 – 65,535)
+|===

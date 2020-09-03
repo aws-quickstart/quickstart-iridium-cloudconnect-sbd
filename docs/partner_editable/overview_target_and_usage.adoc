@@ -1,7 +1,18 @@
 // Replace the content in <>
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
+This Quick Start reference deployment guide provides step-by-step
+instructions for deploying Iridium CloudConnect on an Iridium customer
+instance on the AWS Cloud.
 
-This Quick Start reference deployment guide provides step-by-step instructions for deploying {partner-product-short-name} on the AWS Cloud.
+=== Iridium Customers 
 
-This Quick Start is for users who <target audience and usage scenario>
+This Quick Start is for users who are customers of Iridium, wishes to
+send mobile originated and mobile terminated Short Burst Message® (SBD®)
+messages to and from Iridium SBD transceivers and interface in queues
+using a JSON protocol. Iridium offers CloudConnect as an option in its
+portfolio of SBD connectors. Iridium customers can refer to the Iridium
+SBD developer’s guide for more information.
+
+//TODO: Link to developer's guide?
+

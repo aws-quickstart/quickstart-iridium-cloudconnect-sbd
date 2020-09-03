@@ -1,5 +1,8 @@
 // Replace the content in <>
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
-
-<Describe how the software works on AWS.>
+Iridium CloudConnect makes use of AWS and enables companies building out
+IoT capabilities on AWS to extend their reach globally through the
+Iridium® network. Iridium CloudConnect is an adapter service that
+transfers Short Burst Data® (SBD®) from am Iridium-based device directly
+to a specified cloud service, initially AWS.
