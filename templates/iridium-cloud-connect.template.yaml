@@ -1,0 +1,95 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: "CloudFormation template for creating SQS queues and cross-account permission for Iridium Cloud Connect to access the appropriate SQS queues. (qs-1qbcfsuje)"
+Metadata:
+  QuickStartDocumentation:
+    EntrypointName: "Launch into your desired region"
+Parameters:
+  IridiumRoleARN:
+    Description: The Amazon Resource Number (ARN) of the role within the Iridium AWS account 
+    Type: String
+  MobileOriginatedQueueName:
+    Description: The name for the mobile-originated queue in SQS 
+    Type: String
+    Default: ICCMO.fifo
+  MobileTerminatedQueueName:
+    Description: The name for the mobile-terminated queue in SQS 
+    Type: String
+    Default: ICCMT.fifo
+  MobileTerminatedConfirmationQueueName:
+    Description: The name for the mobile-terminated confirmation queue in SQS 
+    Type: String
+    Default: ICCMTConfirmation.fifo
+  MobileTerminatedErrorQueueName:
+    Description: The name for the mobile-terminated confirmation queue in SQS 
+    Type: String
+    Default: ICCMTErrors.fifo
+Rules:
+  SamePartitionAsIridiumRole:
+    Assertions:
+      - Assert:
+          !Equals
+            - !Select [0, !Split [ ":", !Ref IridiumRoleARN]]
+            - !Ref AWS::Partition
+        AssertDescription: !Sub "The IridiumRoleARN must be in this AWS Partition. (${AWS::Partition})"
+Resources:
+  MobileOriginatedSQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: True
+      QueueName: !Ref MobileOriginatedQueueName
+  MobileTerminatedSQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: True
+      QueueName: !Ref MobileTerminatedQueueName
+  MobileTerminatedConfirmationSQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: True
+      QueueName: !Ref MobileTerminatedConfirmationQueueName
+  MobileTerminatedErrorSQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: True
+      QueueName: !Ref MobileTerminatedErrorQueueName
+  SQSQueueCrossAccountPolicy: 
+    Type: AWS::IAM::Policy
+    DependsOn: 
+    - MobileOriginatedSQSQueue
+    - SQSCrossAccountRole
+    Properties: 
+      PolicyName: "allow-sqs-send-message"
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: Allow
+            Action: 
+              - sqs:SendMessage
+              - sqs:ReceiveMessage
+              - sqs:DeleteMessage
+            Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileOriginatedSQSQueue.QueueName}"
+          - 
+            Effect: Allow
+            Action: 
+              - sqs:SendMessage
+            Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedConfirmationSQSQueue.QueueName}"
+          - 
+            Effect: Allow
+            Action: 
+              - sqs:SendMessage
+            Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedErrorSQSQueue.QueueName}"
+      Roles: 
+      - !Ref 'SQSCrossAccountRole'
+  SQSCrossAccountRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              AWS: !Ref 'IridiumRoleARN'
+            Action: "sts:AssumeRole"
