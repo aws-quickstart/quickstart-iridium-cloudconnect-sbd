@@ -21,7 +21,7 @@ Parameters:
     Type: String
     Default: ICCMTConfirmation.fifo
   MobileTerminatedErrorQueueName:
-    Description: The name for the mobile-terminated confirmation queue in SQS 
+    Description: The name for the mobile-terminated error queue in SQS 
     Type: String
     Default: ICCMTErrors.fifo
 Rules:

@@ -4,5 +4,5 @@
 Iridium CloudConnect makes use of AWS and enables companies building out
 IoT capabilities on AWS to extend their reach globally through the
 Iridium® network. Iridium CloudConnect is an adapter service that
-transfers Short Burst Data® (SBD®) from am Iridium-based device directly
+transfers Short Burst Data® (SBD®) from an Iridium-based device directly
 to a specified cloud service, initially AWS.
