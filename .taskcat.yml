@@ -18,7 +18,7 @@ project:
     - us-west-1
     - us-west-2
   parameters:
-    IridiumRoleARN: arn:aws:iam::0123456789012:role/ExampleRole
+    IridiumRoleARN: "arn:aws:iam::084982461708:role/Admin"
 tests:
   iridium-sbd-sqs:
     template: templates/iridium-cloud-connect-sbd.template.yaml
