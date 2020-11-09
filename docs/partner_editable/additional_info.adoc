@@ -4,11 +4,11 @@
 
 === Interacting with your SQS Queues
 
-AWS provides many ways to interact with the Iridium CloudConnect queues, including:
+AWS provides many ways to interact with  Iridium CloudConnect queues, including:
 
-* Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS CLI^].
+* Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
-* Manually in the AWS console by navigating to Amazon SQS to view the queues.
+* Manually, in the AWS console by navigating to Amazon SQS to view the queues.
 * Programmatically, with many available libraries, such as:
 ** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[The boto3 library for Python^]
 ** https://aws.amazon.com/sdk-for-net/[The AWS SDK for .NET^]
@@ -174,11 +174,7 @@ Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). T
 
 When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between your SQS and the Iridium gateway through Iridium CloudConnect. 
 
-The JSON object contains additional information about the device, and message payload and header information, in the following format.
-
-==== JSON format
-
-===== _JSON Example_
+The JSON object contains information about the device, message payload, and header, in the following format:
 
 ```
 {
@@ -202,16 +198,11 @@ The JSON object contains additional information about the device, and message pa
     }
 }
 ```
-The JSON key:value pairs values align with SBD developer documentation,
-repeated as a reference towards the end of this document. Please consult
-the Iridium SBD developer’s guide as well.
+NOTE: See the Iridium Short Burst Data Developers Guide for more information about message specifications.
 
 ==== Mobile-originated message formatting
 
-===== _Mobile-originated message JSON_
-
-Mobile-originated messages will be translated into the following JSON
-format:
+Mobile-originated messages will be translated into the following JSON format:
 
 ```
 {
@@ -245,7 +236,7 @@ NOTE: For field details, see the tables below.
 |location_information |Contains the latitude, longitude, and certainty
 radius.
 
-|mo_header |Contains meta-data about the message including status and
+|mo_header |Contains metadata about the message including status and
 device ID.
 
 |payload |Contains the payload of the message.
@@ -275,8 +266,7 @@ ISU’s location. |Integer
 |===
 |Field |Description |Type
 
-|cdr_reference |Call Detail Record, also known as AutoID. Unique identifier for a given
-message in the Iridium gateway database. |10-digit number
+|cdr_reference |Call Detail Record, also known as AutoID. Unique identifier for a given message in the Iridium gateway database. |10-digit number
 
 |imei |Unique equipment identifier, also known as device ID. |15-digit number
 
@@ -363,7 +353,7 @@ Use the following formatting to build mobile-terminated messages:
   "assign_mtmsn" : false
 }
 ```
-NOTE: See SBD development guide for allowed combinations. For field details, see the link:#_top_level_mt_keys[Top-level MT keys] table below.
+NOTE: See the Iridium Short Burst Data Developers Guide for allowed combinations. For field details, see the link:#_top_level_mt_keys[Top-level MT keys] table below.
 
 ===== _Top-level MT keys_
 
@@ -375,40 +365,26 @@ NOTE: See SBD development guide for allowed combinations. For field details, see
 
 |message |The payload of the MT message |String
 
-|imei |Unique Equipment Identifier used to determine the device which
-will receive an MT message. |15-digit number
+|imei |Unique Equipment Identifier of the device that will receive an MT message. |15-digit number
 
 |flush_mt_queue a|
 When this flag is set to true, all payloads in the MT queue for the
-given IMEI are deleted. This provides an integrated method to administer
-MT queues.
+given IMEI are deleted. This provides an integrated method to administer MT queues.
 
-When a payload is included in the MT message, it will be queued after
-the currently queued payloads, if any, have been deleted. This enables
-the Vendor Application to maintain a queue depth of one, overwriting any
-previous payload queued.
+When a payload is included in the MT message, it will be queued after the currently queued payloads, if any, have been deleted. This enables the Vendor Application to maintain a queue depth of one, overwriting any previous payload queued.
 
 |Boolean (true, false)
 
-|send_ring_alert_no_payload |When this flag is set to true, the Iridium
-gateway is directed to send a SBD ring alert to the specified IMEI
-within the bounds of normal SBD ring alert processing, even though no new
-MT message is being queued. |Boolean (true, false)
+|send_ring_alert_no_payload |When this flag is set to true, the Iridium gateway is directed to send a SBD ring alert to the specified IMEI within the bounds of normal SBD ring alert processing, even though no new MT message is being queued. |Boolean (true, false)
 
-|high_priority_message |Place the associated MT payload in queue based
-on priority level. |Boolean (true, false)
+|high_priority_message |Place the associated MT payload in queue based on priority level. |Boolean (true, false)
 
-|assign_mtmsn |When this flag is set, the GSS will use the value in the
-Unique ID field in the message header as the MTMSN for the associated MT
-message payload. |Boolean (true, false)
+|assign_mtmsn |When this flag is set, the GSS will use the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload. |Boolean (true, false)
 |===
 
 ==== MT confirmation message formatting
 
-===== _Mobile terminated confirmation JSON_
-
-MT confirmation messages are presented in the following format. For more
-about the information held in the fields, see the associated MT confirmation tables below.
+MT confirmation messages are presented in the following format:
 
 :source-highlighter: coderay
 :coderay-linenums-mode: inline
@@ -431,13 +407,11 @@ NOTE: For field details, see the link:#_keys[Keys] and link:#_mt_confirmation_st
 |===
 |Field |Description
 
-|mt_message_id |Identifier of the message in the Iridium CloudConnect
-database.
+|mt_message_id |Identifier of the message in the Iridium CloudConnect database.
 
 |unique_client_message_id |Customer-supplied identifier for the message.
 
-|imei |Unique equipment identifier used to determine the device that
-will receive an MT message.
+|imei |Unique equipment identifier of the device that will receive an MT message.
 
 |auto_id_reference |Unique identifier in the Iridium gateway database.
 
@@ -454,7 +428,7 @@ will receive an MT message.
 |0 |Successful, no payload in message.
 |-1 |Invalid IMEI – too few characters, non-numeric characters.
 |-2 |Unknown IMEI – not provisioned on the Iridium gateway.
-|-3 |Payload size exceeded maximum allowed. (See Section 1.0.)
+|-3 |Payload size exceeded maximum allowed.
 |-4 |Payload expected, but none received.
 |-5 |MT message queue full (maximum of 50).
 |-6 |MT resources unavailable.
@@ -464,3 +438,5 @@ will receive an MT message.
 |-10 |Source IP address rejected by MT filter.
 |-11 |MTMSN value is out of range (valid range is 1 – 65,535).
 |===
+
+NOTE: See the Iridium Short Burst Data Developers Guide for transceiver message sizes and other specifications.
