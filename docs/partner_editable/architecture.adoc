@@ -10,9 +10,6 @@ image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
-* A highly available architecture that spans multiple Availability
-Zones.*
-* Amazon SQS stores all message queues and messages within a single,
-highly-available AWS region with multiple redundant Availability Zones
-(AZs), so that no single computer, network, or AZ failure can make
-messages inaccessible.
+* A highly available architecture that spans multiple Availability Zones.*
+* Amazon Simple Queue Service (SQS) stores all message queues and messages within a single,
+highly-available AWS region with multiple redundant Availability Zones, so that no single computer, network, or Availability Zone failure can make messages inaccessible.

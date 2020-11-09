@@ -2,22 +2,22 @@
 //Should any sections not be applicable, remove them
 
 
-=== Interacting with your SQS Queues
+=== Interacting with your Amazon SQS Queues
 
-AWS provides many ways to interact with  Iridium CloudConnect queues, including:
+AWS provides several ways to interact with Iridium CloudConnect queues, including:
 
 * Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
 * Manually, in the AWS console by navigating to Amazon SQS to view the queues.
 * Programmatically, with many available libraries, such as:
-** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[The boto3 library for Python^]
-** https://aws.amazon.com/sdk-for-net/[The AWS SDK for .NET^]
-** https://aws.amazon.com/sdk-for-java/[The AWS SDK for Java^]
-** https://aws.amazon.com/sdk-for-ruby/[The AWS SDK for Ruby^]
+** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[boto3 library for Python^]
+** https://aws.amazon.com/sdk-for-net/[AWS SDK for .NET^]
+** https://aws.amazon.com/sdk-for-java/[AWS SDK for Java^]
+** https://aws.amazon.com/sdk-for-ruby/[AWS SDK for Ruby^]
 
-==== Receiving mobile-originated (MO) messages
+=== Receiving mobile-originated (MO) messages
 
-The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo SQS queue. When messages are received, save your database to process the messages. Then, delete the messages.
+The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then, delete the messages.
 
 NOTE: As a precaution in case of a connectivity issue, Amazon SQS doesn't automatically delete a message after receiving it. To delete a message, you must send a separate request after receiving it. See https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html[Receiving and deleting messages (console)^].
 
@@ -59,29 +59,13 @@ for message in queue.receive_messages(WaitTimeSeconds=30):
 message.delete()
 ```
 
-==== Sending mobile-terminated (MT) messages
+=== Sending mobile-terminated (MT) messages
 
-Mobile-terminated messages are sent asynchronously. You place messages in the ICCMT.fifo
-queue and then poll the ICCMTConfirmation.fifo and ICCMTErrors.fifo
-queues for delivery status information. The recommended approach for the
-management of MT messages is to break it into three separate processes:
+Mobile-terminated messages are sent asynchronously. Therefore, when establishing a process by which MT messages are managed, it is recommended that you break it down into three separate procedures: link:#_sending[sending], link:#_polling_the_confirmation_message_queue[polling the confirmation message queue], and link:#_polling_the_error_message_queue[polling the error message queue].
 
-. A process for sending MT messages
-.. Uniquely identify each message with an integer
-.. Send the message to the ICCMT.fifo queue
-. A process for checking the ICCMTConfirmation.fifo queue for a response
-.. Just like the recommended approach for MO messages:
-... Process each confirmation message
-... Delete each message
-. A process for checking the ICCMTErrors.fifo queues for a response
-.. Just like the recommended approach for MO messages:
-... Process each error message
-... Delete each message
+==== Sending
 
-=== MT Examples
-
-==== _Sending an MT Message_
-
+When sending IT messages, uniquely identify each message with an integer, and send the message to the ICCMT.fifo queue. For example:
 ```
 import boto3
 import json
@@ -109,8 +93,8 @@ mt_queue.send_message(
 )
 ```
 
-==== _Checking the MTConfirmation.fifo Queue_
-
+==== Polling the confirmation message queue
+When polling the ICCMTConfirmation.fifo queue for confirmation messages, process each confirmation message and then delete it. For example:
 ```
 # Get the service resource
 sqs = boto3.resource('sqs') # Get the queues
@@ -137,7 +121,8 @@ for message in mt_confirmation_queue.receive_messages(WaitTimeSeconds=30):
 message.delete()
 ```
 
-==== _Checking the MTErrors.fifo Queue_
+==== Polling the error message queue
+When polling the MTErrors.fifo queue for error messages, process each error message and then delete it. For example:
 
 ```
 # Get the service resource
@@ -160,7 +145,7 @@ message.delete()
 Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). The provisioning address format is `address:port`, which corresponds to the customer origin and destination.
 
 
-==== Provisioning Setting
+// ==== Provisioning Setting
 
 // aklsdjfklasdf
 //
@@ -172,7 +157,7 @@ Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). T
 
 === Data Format
 
-When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between your SQS and the Iridium gateway through Iridium CloudConnect. 
+When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect. 
 
 The JSON object contains information about the device, message payload, and header, in the following format:
 
@@ -241,7 +226,7 @@ device ID.
 
 |payload |Contains the payload of the message.
 
-|api_version |Notes the SBD api version. Should always be 1.
+|api_version |Notes the SBD API version. Should always be 1.
 |===
 
 ===== _Location information_
@@ -367,11 +352,11 @@ NOTE: See the Iridium Short Burst Data Developers Guide for allowed combinations
 
 |imei |Unique Equipment Identifier of the device that will receive an MT message. |15-digit number
 
-|flush_mt_queue a|
+|flush_mt_queue |
 When this flag is set to true, all payloads in the MT queue for the
 given IMEI are deleted. This provides an integrated method to administer MT queues.
 
-When a payload is included in the MT message, it will be queued after the currently queued payloads, if any, have been deleted. This enables the Vendor Application to maintain a queue depth of one, overwriting any previous payload queued.
+When a payload is included in the MT message, it will be queued after the currently queued payloads, if any, have been deleted. This enables the vendor application to maintain a queue depth of one, overwriting any previous payload queued.
 
 |Boolean (true, false)
 
