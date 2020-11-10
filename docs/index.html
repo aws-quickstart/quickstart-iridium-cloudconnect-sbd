@@ -810,8 +810,9 @@ p.footer-text a{color:#d7d8d8}
 <ul class="sectlevel2">
 <li><a href="#_sign_in_to_your_aws_account">Sign in to your AWS account</a></li>
 <li><a href="#_launch_the_quick_start">Launch the Quick Start</a></li>
-<li><a href="#_interacting_with_your_sqs_queues">Interacting with your SQS Queues</a></li>
-<li><a href="#_mt_examples">MT Examples</a></li>
+<li><a href="#_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS Queues</a></li>
+<li><a href="#_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</a></li>
+<li><a href="#_sending_mobile_terminated_mt_messages">Sending mobile-terminated (MT) messages</a></li>
 <li><a href="#_provisioning">Provisioning</a></li>
 <li><a href="#_data_format">Data Format</a></li>
 </ul>
@@ -960,14 +961,11 @@ AWS Cloud.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>A highly available architecture that spans multiple Availability
-Zones.*</p>
+<p>A highly available architecture that spans multiple Availability Zones.*</p>
 </li>
 <li>
-<p>Amazon SQS stores all message queues and messages within a single,
-highly-available AWS region with multiple redundant Availability Zones
-(AZs), so that no single computer, network, or AZ failure can make
-messages inaccessible.</p>
+<p>Amazon Simple Queue Service (SQS) stores all message queues and messages within a single,
+highly-available AWS region with multiple redundant Availability Zones, so that no single computer, network, or Availability Zone failure can make messages inaccessible.</p>
 </li>
 </ul>
 </div>
@@ -1199,43 +1197,44 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </div>
 </div>
 <div class="sect2">
-<h3 id="_interacting_with_your_sqs_queues">Interacting with your SQS Queues</h3>
+<h3 id="_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS Queues</h3>
 <div class="paragraph">
-<p>AWS provides many ways to interact with the Iridium CloudConnect queues, including:</p>
+<p>AWS provides several ways to interact with Iridium CloudConnect queues, including:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Via the command line, using the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html" target="_blank" rel="noopener">AWS CLI</a>.</p>
+<p>Via the command line, using the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html" target="_blank" rel="noopener">AWS Command Line Interface (AWS CLI)</a>.</p>
 </li>
 <li>
-<p>Manually in the AWS console by navigating to Amazon SQS to view the queues.</p>
+<p>Manually, in the AWS console by navigating to Amazon SQS to view the queues.</p>
 </li>
 <li>
 <p>Programmatically, with many available libraries, such as:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_blank" rel="noopener">The boto3 library for Python</a></p>
+<p><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_blank" rel="noopener">boto3 library for Python</a></p>
 </li>
 <li>
-<p><a href="https://aws.amazon.com/sdk-for-net/" target="_blank" rel="noopener">The AWS SDK for .NET</a></p>
+<p><a href="https://aws.amazon.com/sdk-for-net/" target="_blank" rel="noopener">AWS SDK for .NET</a></p>
 </li>
 <li>
-<p><a href="https://aws.amazon.com/sdk-for-java/" target="_blank" rel="noopener">The AWS SDK for Java</a></p>
+<p><a href="https://aws.amazon.com/sdk-for-java/" target="_blank" rel="noopener">AWS SDK for Java</a></p>
 </li>
 <li>
-<p><a href="https://aws.amazon.com/sdk-for-ruby/" target="_blank" rel="noopener">The AWS SDK for Ruby</a></p>
+<p><a href="https://aws.amazon.com/sdk-for-ruby/" target="_blank" rel="noopener">AWS SDK for Ruby</a></p>
 </li>
 </ul>
 </div>
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</h4>
+</div>
+<div class="sect2">
+<h3 id="_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</h3>
 <div class="paragraph">
-<p>The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo SQS queue. When messages are received, save your database to process the messages. Then, delete the messages.</p>
+<p>The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then, delete the messages.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1289,77 +1288,16 @@ message.delete()</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_sending_mobile_terminated_mt_messages">Sending mobile-terminated (MT) messages</h4>
-<div class="paragraph">
-<p>Mobile-terminated messages are sent asynchronously. You place messages in the ICCMT.fifo
-queue and then poll the ICCMTConfirmation.fifo and ICCMTErrors.fifo
-queues for delivery status information. The recommended approach for the
-management of MT messages is to break it into three separate processes:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>A process for sending MT messages</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Uniquely identify each message with an integer</p>
-</li>
-<li>
-<p>Send the message to the ICCMT.fifo queue</p>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>A process for checking the ICCMTConfirmation.fifo queue for a response</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Just like the recommended approach for MO messages:</p>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
-<li>
-<p>Process each confirmation message</p>
-</li>
-<li>
-<p>Delete each message</p>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>A process for checking the ICCMTErrors.fifo queues for a response</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Just like the recommended approach for MO messages:</p>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
-<li>
-<p>Process each error message</p>
-</li>
-<li>
-<p>Delete each message</p>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
 <div class="sect2">
-<h3 id="_mt_examples">MT Examples</h3>
+<h3 id="_sending_mobile_terminated_mt_messages">Sending mobile-terminated (MT) messages</h3>
+<div class="paragraph">
+<p>Mobile-terminated messages are sent asynchronously. Therefore, when establishing a process by which MT messages are managed, it is recommended that you break it down into three separate procedures: <a href="#_sending">sending</a>, <a href="#_polling_the_confirmation_message_queue">polling the confirmation message queue</a>, and <a href="#_polling_the_error_message_queue">polling the error message queue</a>.</p>
+</div>
 <div class="sect3">
-<h4 id="_sending_an_mt_message"><em>Sending an MT Message</em></h4>
+<h4 id="_sending">Sending</h4>
+<div class="paragraph">
+<p>When sending IT messages, uniquely identify each message with an integer, and send the message to the ICCMT.fifo queue. For example:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>import boto3
@@ -1390,7 +1328,10 @@ mt_queue.send_message(
 </div>
 </div>
 <div class="sect3">
-<h4 id="_checking_the_mtconfirmation_fifo_queue"><em>Checking the MTConfirmation.fifo Queue</em></h4>
+<h4 id="_polling_the_confirmation_message_queue">Polling the confirmation message queue</h4>
+<div class="paragraph">
+<p>When polling the ICCMTConfirmation.fifo queue for confirmation messages, process each confirmation message and then delete it. For example:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code># Get the service resource
@@ -1420,7 +1361,10 @@ message.delete()</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_checking_the_mterrors_fifo_queue"><em>Checking the MTErrors.fifo Queue</em></h4>
+<h4 id="_polling_the_error_message_queue">Polling the error message queue</h4>
+<div class="paragraph">
+<p>When polling the MTErrors.fifo queue for error messages, process each error message and then delete it. For example:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code># Get the service resource
@@ -1445,23 +1389,15 @@ message.delete()</code></pre>
 <div class="paragraph">
 <p>Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). The provisioning address format is <code>address:port</code>, which corresponds to the customer origin and destination.</p>
 </div>
-<div class="sect3">
-<h4 id="_provisioning_setting">Provisioning Setting</h4>
-
-</div>
 </div>
 <div class="sect2">
 <h3 id="_data_format">Data Format</h3>
 <div class="paragraph">
-<p>When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between your SQS and the Iridium gateway through Iridium CloudConnect.</p>
+<p>When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect.</p>
 </div>
 <div class="paragraph">
-<p>The JSON object contains additional information about the device, and message payload and header information, in the following format.</p>
+<p>The JSON object contains information about the device, message payload, and header, in the following format:</p>
 </div>
-<div class="sect3">
-<h4 id="_json_format">JSON format</h4>
-<div class="sect4">
-<h5 id="_json_example"><em>JSON Example</em></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>{
@@ -1486,20 +1422,22 @@ message.delete()</code></pre>
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The JSON key:value pairs values align with SBD developer documentation,
-repeated as a reference towards the end of this document. Please consult
-the Iridium SBD developer’s guide as well.</p>
-</div>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See the Iridium Short Burst Data Developers Guide for more information about message specifications.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_mobile_originated_message_formatting">Mobile-originated message formatting</h4>
-<div class="sect4">
-<h5 id="_mobile_originated_message_json"><em>Mobile-originated message JSON</em></h5>
 <div class="paragraph">
-<p>Mobile-originated messages will be translated into the following JSON
-format:</p>
+<p>Mobile-originated messages will be translated into the following JSON format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1536,7 +1474,6 @@ For field details, see the tables below.
 </tr>
 </table>
 </div>
-</div>
 <div class="sect4">
 <h5 id="_top_level_mo_keys"><em>Top level MO keys</em></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -1558,7 +1495,7 @@ radius.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mo_header</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Contains meta-data about the message including status and
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contains metadata about the message including status and
 device ID.</p></td>
 </tr>
 <tr>
@@ -1567,7 +1504,7 @@ device ID.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">api_version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Notes the SBD api version. Should always be 1.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Notes the SBD API version. Should always be 1.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1627,8 +1564,7 @@ ISU’s location.</p></td>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cdr_reference</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Call Detail Record, also known as AutoID. Unique identifier for a given
-message in the Iridium gateway database.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Call Detail Record, also known as AutoID. Unique identifier for a given message in the Iridium gateway database.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10-digit number</p></td>
 </tr>
 <tr>
@@ -1806,7 +1742,7 @@ associated with the SBD session. This value is set by the Iridium gateway at the
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See SBD development guide for allowed combinations. For field details, see the <a href="#_top_level_mt_keys">Top-level MT keys</a> table below.
+See the Iridium Short Burst Data Developers Guide for allowed combinations. For field details, see the <a href="#_top_level_mt_keys">Top-level MT keys</a> table below.
 </td>
 </tr>
 </table>
@@ -1839,44 +1775,29 @@ See SBD development guide for allowed combinations. For field details, see the <
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique Equipment Identifier used to determine the device which
-will receive an MT message.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique Equipment Identifier of the device that will receive an MT message.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">15-digit number</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">flush_mt_queue</p></td>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>When this flag is set to true, all payloads in the MT queue for the
-given IMEI are deleted. This provides an integrated method to administer
-MT queues.</p>
-</div>
-<div class="paragraph">
-<p>When a payload is included in the MT message, it will be queued after
-the currently queued payloads, if any, have been deleted. This enables
-the Vendor Application to maintain a queue depth of one, overwriting any
-previous payload queued.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to true, all payloads in the MT queue for the
+given IMEI are deleted. This provides an integrated method to administer MT queues.</p>
+<p class="tableblock">When a payload is included in the MT message, it will be queued after the currently queued payloads, if any, have been deleted. This enables the vendor application to maintain a queue depth of one, overwriting any previous payload queued.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">send_ring_alert_no_payload</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to true, the Iridium
-gateway is directed to send a SBD ring alert to the specified IMEI
-within the bounds of normal SBD ring alert processing, even though no new
-MT message is being queued.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to true, the Iridium gateway is directed to send a SBD ring alert to the specified IMEI within the bounds of normal SBD ring alert processing, even though no new MT message is being queued.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">high_priority_message</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Place the associated MT payload in queue based
-on priority level.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Place the associated MT payload in queue based on priority level.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">assign_mtmsn</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set, the GSS will use the value in the
-Unique ID field in the message header as the MTMSN for the associated MT
-message payload.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set, the GSS will use the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 </tbody>
@@ -1885,11 +1806,8 @@ message payload.</p></td>
 </div>
 <div class="sect3">
 <h4 id="_mt_confirmation_message_formatting">MT confirmation message formatting</h4>
-<div class="sect4">
-<h5 id="_mobile_terminated_confirmation_json"><em>Mobile terminated confirmation JSON</em></h5>
 <div class="paragraph">
-<p>MT confirmation messages are presented in the following format. For more
-about the information held in the fields, see the associated MT confirmation tables below.</p>
+<p>MT confirmation messages are presented in the following format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1914,7 +1832,6 @@ For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmat
 </tr>
 </table>
 </div>
-</div>
 <div class="sect4">
 <h5 id="_keys"><em>Keys</em></h5>
 <table class="tableblock frame-all grid-all stretch">
@@ -1931,8 +1848,7 @@ For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmat
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mt_message_id</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier of the message in the Iridium CloudConnect
-database.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier of the message in the Iridium CloudConnect database.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">unique_client_message_id</p></td>
@@ -1940,8 +1856,7 @@ database.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique equipment identifier used to determine the device that
-will receive an MT message.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique equipment identifier of the device that will receive an MT message.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">auto_id_reference</p></td>
@@ -1986,7 +1901,7 @@ will receive an MT message.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Payload size exceeded maximum allowed. (See Section 1.0.)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Payload size exceeded maximum allowed.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-4</p></td>
@@ -2022,6 +1937,18 @@ will receive an MT message.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See the Iridium Short Burst Data Developers Guide for transceiver message sizes and other specifications.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>

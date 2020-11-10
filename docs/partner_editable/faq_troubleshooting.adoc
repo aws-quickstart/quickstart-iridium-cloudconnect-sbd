@@ -7,7 +7,7 @@
 *A.* If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with *Rollback on failure* set to *Disabled*. (This setting is under *Advanced* in the AWS CloudFormation console, *Options* page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
 // If you’re deploying on Linux instances, provide the location for log files on Linux, or omit this sentence.
 
-WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Please make sure to delete the stack when you finish troubleshooting.
+WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
 
 For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^] on the AWS website.
 
@@ -20,8 +20,8 @@ DirectIP channel. How do I get started with a development environment?.
 
 *A.* Customers can connect their development environment to the Iridium
 CloudConnect service and use devices of their choice. Iridium expects
-most customers to have an Iridium CloudConnect instance for their
-development environments and one for their production system, aligning
+most customers to have one Iridium CloudConnect instance for their
+development environments and another for their production system, aligning
 with the way customers have traditionally set up DirectIP destinations.
 Partners can explore Iridium CloudConnect regardless of their existing
 connection method to Iridium for SBD®. Please reach out to your channel
@@ -36,14 +36,14 @@ compute resources?
 *A.* Iridium is currently not assessing a usage charge for sending
 messages through Iridium CloudConnect vs any other method such as
 DirectIP. Iridium prefers that customers use Iridium CloudConnect for
-development and production environments. As such Iridium may
-disincentivize customers utilizing SMTP (e-mail) for message exchange to
+development and production environments. As such, Iridium may
+direct customers from using SMTP (e-mail) for message exchange to
 the SBD gateway for production environment activity.
 
-*Q.* How do you ensure message ordering? Do you use SQS FIFO?.
+*Q.* How do you ensure message ordering? Do you use Amazon SQS FIFO (First-In-First-Out)?.
 
 *A.* Iridium processes messages from the gateway in order of receipt but
-does not specifically use a Lambda for it. Depending on a customer SQS
-queue choice (FIFO, non-FIFO). During setup of Iridium CloudConnect,
+does not specifically use an AWS Lambda instance for it. Depending on a customer Amazon SQS
+queue choice (FIFO or non-FIFO). During the setup of Iridium CloudConnect,
 customers can choose the following configurations. FIFO queues will keep
 messages in order.
