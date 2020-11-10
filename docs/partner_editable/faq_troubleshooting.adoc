@@ -24,7 +24,7 @@ most customers to have one Iridium CloudConnect instance for their
 development environments and another for their production system, aligning
 with the way customers have traditionally set up DirectIP destinations.
 Partners can explore Iridium CloudConnect regardless of their existing
-connection method to Iridium for SBD®. Please reach out to your channel
+connection method to Iridium SBD®. Please reach out to your channel
 manager for a customized technical brief to address your specific
 back-end situation and configuration. Most customers have messages
 routed to both their traditional method and through Iridium CloudConnect
