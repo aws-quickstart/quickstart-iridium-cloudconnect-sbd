@@ -1,7 +1,15 @@
 // Replace the content in <>
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
-This Quick Start will benefit an Iridium customer wanting to receive Short Burst Data (SBD) data from Iridium-based devices in an Amazon Simple Queue Service (SQS) queue in JavaScript Object Notation (JSON). Message queues are stored on the Iridium customer's own AWS Virtual Private Cloud (VPC) environment. This guide contains the instructions to deploy the Quick Start to set up Iridium CloudConnect with cross-account authentication and a secure and redundant connection between the Iridium SBD gateway and AWS.
+This Quick Start is for Iridium users wanting the following:
+
+* To receive Short Burst Data (SBD) status messages from Iridium devices in an Amazon Simple Queue Service (SQS) queue in JavaScript Object Notation (JSON) format.
+
+* To have the message queues reside on their own AWS Virtual Private Cloud (VPC) instance.
+
+* To set up Iridium CloudConnect with cross-account authentication to transfer SBD messages through a secure and redundant connection with AWS.
+
+This guide contains the instructions for deploying the Iridium CloudConnect for SBD on AWS Quick Start.
 
 NOTE: Short Burst Data messages referred to here include mobile-originated (MO) and mobile-terminated (MT) messages sent to and from Iridium-based devices. See the Iridium Short Burst Data Developers Guide for more information about SBD message specifications.
 

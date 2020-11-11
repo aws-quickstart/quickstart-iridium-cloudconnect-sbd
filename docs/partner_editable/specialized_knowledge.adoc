@@ -1,8 +1,4 @@
 // Replace the content in <>
 // Describe or link to specific knowledge requirements; for example: “familiarity with basic concepts in the areas of networking, database operations, and data encryption” or “familiarity with <software>.”
 
-This Quick Start assumes some
-familiarity with Iridium Short Burst Data® (SBD®) devices and
-communications. While deep knowledge is more relevant to developers and end users of
-Iridium Short Burst Data®, this knowledge is not a prerequisite for setting up Iridium
-CloudConnect.
+This Quick Start reference deployment guide assumes that you have some familiarity with Iridium Short Burst Data (SBD) devices and communications.
