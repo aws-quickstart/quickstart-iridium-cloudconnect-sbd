@@ -4,7 +4,7 @@
 
 === Interacting with your Amazon SQS Queues
 
-AWS provides several ways to interact with Iridium CloudConnect queues, including:
+AWS provides several ways to interact with Iridium CloudConnect SBD queues, including:
 
 * Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
@@ -17,7 +17,7 @@ AWS provides several ways to interact with Iridium CloudConnect queues, includin
 
 === Receiving mobile-originated (MO) messages
 
-The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then, delete the messages.
+The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then delete the messages.
 
 NOTE: As a precaution in case of a connectivity issue, Amazon SQS doesn't automatically delete a message after receiving it. To delete a message, you must send a separate request after receiving it. See https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html[Receiving and deleting messages (console)^].
 

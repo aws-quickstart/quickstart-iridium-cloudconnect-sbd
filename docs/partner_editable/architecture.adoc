@@ -11,7 +11,7 @@ image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
 * A highly-available architecture that spans multiple Availability Zones.*
-* Amazon Simple Queue Service (SQS), deployed into your existing Amazon Web Services (AWS) architecture, storing Iridium Short Burst Data (SBD) message queues and messages.
-* Cross-account permissions for Iridium CloudConnect to access SBD queues managed by Amazon SQS. 
+* Amazon Simple Queue Service (SQS), deployed into your existing Amazon Web Services (AWS) architecture, to manage Iridium Short Burst Data (SBD) message queues and messages.
+* Cross-account permissions for Iridium CloudConnect to transfer SBD messages from the Iridium gateway to the AWS Cloud. 
 
 *Deployed in a single, highly-available AWS Region with redundant Availability Zones. With this architecture, no single computer, network, or Availability Zone failure can render your Iridium SBD messages inaccessible.
