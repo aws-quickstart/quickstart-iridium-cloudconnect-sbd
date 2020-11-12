@@ -183,7 +183,7 @@ The JSON object contains information about the device, message payload, and head
     }
 }
 ```
-NOTE: See the Iridium Short Burst Data Developers Guide for more information about message specifications.
+NOTE: See the Iridium Short Burst Data Service Developers Guide for more information about message specifications.
 
 ==== Mobile-originated message formatting
 
@@ -338,7 +338,7 @@ Use the following formatting to build mobile-terminated messages:
   "assign_mtmsn" : false
 }
 ```
-NOTE: See the Iridium Short Burst Data Developers Guide for allowed combinations. For field details, see the link:#_top_level_mt_keys[Top-level MT keys] table below.
+NOTE: See the Iridium Short Burst Data Service Developers Guide for allowed combinations. For field details, see the link:#_top_level_mt_keys[Top-level MT keys] table below.
 
 ===== _Top-level MT keys_
 
@@ -424,4 +424,4 @@ NOTE: For field details, see the link:#_keys[Keys] and link:#_mt_confirmation_st
 |-11 |MTMSN value is out of range (valid range is 1 – 65,535).
 |===
 
-NOTE: See the Iridium Short Burst Data Developers Guide for transceiver message sizes and other specifications.
+NOTE: See the Iridium Short Burst Data Service Developers Guide for transceiver message sizes and other specifications.
