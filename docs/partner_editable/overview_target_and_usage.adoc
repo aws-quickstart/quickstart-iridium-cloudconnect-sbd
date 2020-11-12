@@ -5,9 +5,6 @@ This Quick Start reference deployment guide contains step-by-step instructions f
 
 This Quick Start is for Iridium users that want to:
 
-* Deploy Iridium CloudConnect into an existing AWS architecture to transfer mobile-originated (MO) and mobile-terminated (MT) Short Burst Data (SBD) messages through a secure and redundant connection to and from the AWS Cloud.
+* Deploy Iridium CloudConnect into an existing AWS architecture to transfer mobile-originated (MO) and mobile-terminated (MT) Short Burst Data (SBD) messages through a secure and redundant connection with their own virtual private cloud (VPC).
 
-* Send, store, and receive SBD messages in JavaScript Object Notation (JSON) format in highly available Amazon Simple Queue Service (SQS) messaging queue service.
-
-* Have message queues reside on their own Amazon Virtual Private Cloud (VPC) instance.
-
+* Send, store, and receive SBD messages in JavaScript Object Notation (JSON) format with a highly available Amazon Simple Queue Service (SQS) messaging queue service.
