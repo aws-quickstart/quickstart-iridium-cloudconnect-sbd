@@ -859,35 +859,23 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start is for Iridium users wanting the following:</p>
+<p>This Quick Start reference deployment guide contains step-by-step instructions for deploying the Iridium CloudConnect for SBD on the AWS Cloud.</p>
+</div>
+<div class="paragraph">
+<p>This Quick Start is for Iridium users that want to:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>To receive Short Burst Data (SBD) status messages from Iridium devices in an Amazon Simple Queue Service (SQS) queue in JavaScript Object Notation (JSON) format.</p>
+<p>Deploy Iridium CloudConnect into an existing AWS architecture to transfer mobile-originated (MO) and mobile-terminated (MT) Short Burst Data (SBD) messages through a secure and redundant connection to and from the AWS Cloud.</p>
 </li>
 <li>
-<p>To have the message queues reside on their own AWS Virtual Private Cloud (VPC) instance.</p>
+<p>Send, store, and receive SBD messages in JavaScript Object Notation (JSON) format in highly available Amazon Simple Queue Service (SQS) messaging queue service.</p>
 </li>
 <li>
-<p>To set up Iridium CloudConnect with cross-account authentication to transfer SBD messages through a secure and redundant connection with AWS.</p>
+<p>Have message queues reside on their own Amazon Virtual Private Cloud (VPC) instance.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>This guide contains the instructions for deploying the Iridium CloudConnect for SBD on AWS Quick Start.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Short Burst Data messages referred to here include mobile-originated (MO) and mobile-terminated (MT) messages sent to and from Iridium-based devices. See the Iridium Short Burst Data Developers Guide for more information about SBD message specifications.
-</td>
-</tr>
-</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -907,7 +895,13 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 <h2 id="_iridium_cloudconnect_for_sbd_on_aws">Iridium CloudConnect for SBD on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Iridium CloudConnect is a satellite cloud-based adapter service transferring SBD messages from Iridium-based devices to the AWS Cloud.</p>
+<p>Iridium CloudConnect is a satellite cloud-based adapter service that transfers SBD messages from Iridium-based devices to the AWS Cloud.</p>
+</div>
+<div class="paragraph">
+<p>Using this Quick Start, you can launch Iridium CloudConnect for SBD into your existing AWS workload. This Quick Start uses Amazon Simple Queue Service (SQS) to send, store, and receive Iridium SBD messages with a choice of standard and FIFO (First-In-First-Out) queues that are highly available and scalable.</p>
+</div>
+<div class="paragraph">
+<p>For more information about Iridium SBD message specifications, see the Iridium Short Burst Data Developers Guide.</p>
 </div>
 </div>
 </div>
@@ -951,7 +945,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start with default parameters builds the following <em>Iridium CloudConnect</em> environment in the
+<p>Deploying this Quick Start with default parameters builds the following Iridium CloudConnect environment in the
 AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
@@ -969,10 +963,7 @@ AWS Cloud.</p>
 <p>A highly-available architecture that spans multiple Availability Zones.*</p>
 </li>
 <li>
-<p>Amazon Simple Queue Service (SQS), deployed into your existing Amazon Web Services (AWS) architecture, storing Iridium Short Burst Data (SBD) message queues and messages.</p>
-</li>
-<li>
-<p>Cross-account permissions for Iridium CloudConnect to access SBD queues managed by Amazon SQS.</p>
+<p>Amazon Simple Queue Service (SQS), deployed into your existing virtual private cloud (VPC), to provide a highly available queueing service for your Iridium Short Burst Data (SBD) messages transferred by Iridium CloudConnect.</p>
 </li>
 </ul>
 </div>
@@ -1184,7 +1175,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="sect2">
 <h3 id="_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS Queues</h3>
 <div class="paragraph">
-<p>AWS provides several ways to interact with Iridium CloudConnect queues, including:</p>
+<p>AWS provides several ways to interact with Iridium CloudConnect SBD queues, including:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1219,7 +1210,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="sect2">
 <h3 id="_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</h3>
 <div class="paragraph">
-<p>The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then, delete the messages.</p>
+<p>The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then delete the messages.</p>
 </div>
 <div class="admonitionblock note">
 <table>

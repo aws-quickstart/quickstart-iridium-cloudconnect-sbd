@@ -1,4 +1,4 @@
-Deploying this Quick Start with default parameters builds the following _{partner-product-short-name}_ environment in the
+Deploying this Quick Start with default parameters builds the following {partner-product-short-name} environment in the
 AWS Cloud.
 
 // Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors giude)
@@ -11,7 +11,6 @@ image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
 * A highly-available architecture that spans multiple Availability Zones.*
-* Amazon Simple Queue Service (SQS), deployed into your existing Amazon Web Services (AWS) architecture, to manage Iridium Short Burst Data (SBD) message queues and messages.
-* Cross-account permissions for Iridium CloudConnect to transfer SBD messages from the Iridium gateway to the AWS Cloud. 
+* Amazon Simple Queue Service (SQS), deployed into your existing virtual private cloud (VPC), to provide a highly available queueing service for your Iridium Short Burst Data (SBD) messages transferred by Iridium CloudConnect.
 
 *Deployed in a single, highly-available AWS Region with redundant Availability Zones. With this architecture, no single computer, network, or Availability Zone failure can render your Iridium SBD messages inaccessible.
