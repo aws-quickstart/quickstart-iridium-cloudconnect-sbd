@@ -2,8 +2,6 @@
 
 === Iridium Partner or Customer 
 
-If you are not already an Iridium partner or customer, navigate to
-http://www.iridium.com[www.iridium.com]. Iridium customers that are not
-direct Iridium VARs can check with their service provider whether the SP
-provides Iridium CloudConnect. Iridium maintains a list of approved
-Iridium CloudConnect Service Providers.
+If you are not already an Iridium partner or customer, visit
+http://www.iridium.com[www.iridium.com] to learn more. Existing Iridium customers that are not
+direct Iridium Value-Added Retailers (VARs) should check with their service provider if Iridium CloudConnect is provided. You can also visit https://www.iridium.com/who-is-my-sp/[Who's My Service Provider?] on the Iridium web site. Iridium maintains a list of approved Iridium CloudConnect service providers.
