@@ -1,8 +1,8 @@
 :quickstart-project-name: quickstart-iridium-cloudconnect
 :partner-product-name: Iridium CloudConnect for SBD
 :partner-product-short-name: Iridium CloudConnect
-:partner-company-name: Iridium Satellite, LLC
-:doc-month: September
+:partner-company-name: Iridium Satellite LLC
+:doc-month: November
 :doc-year: 2020
 :partner-contributors: Jaco Botes, Jeremy Stock - {partner-company-name}
 :quickstart-contributors: Tim Mattison, Andrew Glenn - AWS

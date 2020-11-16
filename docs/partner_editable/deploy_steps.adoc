@@ -23,12 +23,13 @@ endif::marketplace_subscription[]
 
 NOTE: You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
 
-. Sign in to your AWS account, and choose *Deploy {partner-product-short-name} into your AWS account* to launch the AWS CloudFormation template.
+. Sign in to your AWS account.
+. Choose the link provided (*Deploy {partner-product-short-name} into your AWS account*) to launch the AWS CloudFormation template.
 
 [cols=2*]
 |===
-^|http://qs_launch_link[Deploy {partner-product-short-name} into your AWS account.^]
-^|http://qs_template_link[View template^]
+^|https://fwd.aws/DzxKr[Deploy {partner-product-short-name} into your AWS account.^]
+^|https://fwd.aws/qDG9J[View template^]
 |===
 
 

@@ -8,7 +8,7 @@ AWS provides several ways to interact with Iridium CloudConnect SBD queues, incl
 
 * Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
-* Manually, in the AWS console by navigating to Amazon SQS to view the queues.
+* Manually, by navigating to Amazon SQS in the AWS console to view the queues.
 * Programmatically, with many available libraries, such as:
 ** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[boto3 library for Python^]
 ** https://aws.amazon.com/sdk-for-net/[AWS SDK for .NET^]
@@ -251,9 +251,9 @@ ISU’s location. |Integer
 |===
 |Field |Description |Type
 
-|cdr_reference |Call Detail Record, also known as AutoID. Unique identifier for a given message in the Iridium gateway database. |10-digit number
+|cdr_reference |Call detail record, also known as auto ID. Unique identifier for a given message in the Iridium gateway database. |10-digit number
 
-|imei |Unique equipment identifier, also known as device ID. |15-digit number
+|imei |International Mobile Equipment Identity (IMEI). Unique equipment identifier, also known as device ID. |15-digit number
 
 |mtmsn |Mobile-terminated message sequence number (MTMSN)
 associated with the SBD session. This value is set by the Iridium gateway at the time that an MT message is queued for delivery. It is unique to each IMEI. It is then sent to the IMEI as part of the MT payload transfer. 
