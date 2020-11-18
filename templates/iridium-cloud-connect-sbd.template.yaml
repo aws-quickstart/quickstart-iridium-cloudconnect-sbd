@@ -1,58 +1,51 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: "CloudFormation template for creating SQS queues and cross-account permission for Iridium Cloud Connect to access the appropriate SQS queues. (qs-1qbcfsuje)"
+Description: "CloudFormation template for creating Amazon Simple Queue Service (Amazon SQS) queues and cross-account permission for Iridium CloudConnect to access the appropriate SQS queues. (qs-1qbcfsuje)"
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Launch into your desired region"
+    EntrypointName: Deploy into your desired Region.
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: "Network configuration"
+          default: Iridium CloudConnect configuration
         Parameters:
           - IridiumRoleARN
           - MobileOriginatedQueueName
           - MobileTerminatedQueueName
-          - MobileTerminatedErrorQueueName
           - MobileTerminatedConfirmationQueueName
-    ParameterLabels:
-      IridiumRoleARN:
-        default: Iridium IAM role ARN
-      MobileOriginatedQueueName:
-        default: Mobile-originated queue name
-      MobileTerminatedQueueName:
-        default: Mobile-terminated queue name
-      MobileTerminatedErrorQueueName:
-        default: Mobile-terminated error queue name
-      MobileTerminatedConfirmationQueueName:
-        default: Mobile-terminated confirmation queue name
+          - MobileTerminatedErrorQueueName
+  ParameterLabels:
+    IridiumRoleARN:
+      default: Iridium Role ARN
+    MobileOriginatedQueueName:
+      default: Mobile-originated queue name
+    MobileTerminatedQueueName:
+      default: Mobile-terminated queue name
+    MobileTerminatedConfirmationQueueName:
+      default: Mobile-terminated confirmation queue name
+    MobileTerminatedErrorQueueName:
+      default: Mobile-terminated error queue name
 Parameters:
   IridiumRoleARN:
-    Description: The Amazon Resource Number (ARN) of the role within the Iridium AWS account
+    Description: Amazon Resource Number (ARN) of the role within the Iridium AWS account.
     Type: String
+    AllowedPattern: 'arn:(aws|aws-cn|aws-us-gov):iam::.*:role/.*$'
   MobileOriginatedQueueName:
-    Description: The name for the mobile-originated queue in SQS
+    Description: Name of the mobile-originated queue in SQS.
     Type: String
     Default: ICCMO.fifo
   MobileTerminatedQueueName:
-    Description: The name for the mobile-terminated queue in SQS
+    Description: Name of the mobile-terminated queue in SQS.
     Type: String
     Default: ICCMT.fifo
   MobileTerminatedConfirmationQueueName:
-    Description: The name for the mobile-terminated confirmation queue in SQS
+    Description: Name of the mobile-terminated confirmation queue in SQS.
     Type: String
     Default: ICCMTConfirmation.fifo
   MobileTerminatedErrorQueueName:
-    Description: The name for the mobile-terminated confirmation queue in SQS
+    Description: Name of the mobile-terminated error queue in SQS.
     Type: String
     Default: ICCMTErrors.fifo
-Rules:
-  SamePartitionAsIridiumRole:
-    Assertions:
-      - Assert:
-          !Equals
-            - !Select [0, !Split [ ":", !Ref IridiumRoleARN]]
-            - !Ref AWS::Partition
-        AssertDescription: !Sub "The IridiumRoleARN must be in this AWS Partition. (${AWS::Partition})"
 Resources:
   MobileOriginatedSQSQueue:
     Type: AWS::SQS::Queue
@@ -109,8 +102,7 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          -
-            Effect: "Allow"
+          - Effect: "Allow"
             Principal:
-              AWS: !Ref 'IridiumRoleARN'
+              AWS: !Ref IridiumRoleARN
             Action: "sts:AssumeRole"
