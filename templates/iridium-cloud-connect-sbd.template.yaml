@@ -14,17 +14,17 @@ Metadata:
           - MobileTerminatedQueueName
           - MobileTerminatedConfirmationQueueName
           - MobileTerminatedErrorQueueName
-  ParameterLabels:
-    IridiumRoleARN:
-      default: Iridium Role ARN
-    MobileOriginatedQueueName:
-      default: Mobile-originated queue name
-    MobileTerminatedQueueName:
-      default: Mobile-terminated queue name
-    MobileTerminatedConfirmationQueueName:
-      default: Mobile-terminated confirmation queue name
-    MobileTerminatedErrorQueueName:
-      default: Mobile-terminated error queue name
+    ParameterLabels:
+      IridiumRoleARN:
+        default: Iridium Role ARN
+      MobileOriginatedQueueName:
+        default: Mobile-originated queue name
+      MobileTerminatedQueueName:
+        default: Mobile-terminated queue name
+      MobileTerminatedConfirmationQueueName:
+        default: Mobile-terminated confirmation queue name
+      MobileTerminatedErrorQueueName:
+        default: Mobile-terminated error queue name
 Parameters:
   IridiumRoleARN:
     Description: Amazon Resource Number (ARN) of the role within the Iridium AWS account.
