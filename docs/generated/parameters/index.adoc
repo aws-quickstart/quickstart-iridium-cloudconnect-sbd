@@ -1,1 +1,3 @@
-// placeholder
+
+=== Deploy into your desired Region.
+include::iridium-cloud-connect-sbd.template.adoc[]
