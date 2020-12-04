@@ -8,8 +8,8 @@ AWS provides several ways to interact with Iridium CloudConnect SBD queues, incl
 
 * Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
-* Manually, by navigating to Amazon SQS in the AWS console to view the queues.
-* Programmatically, with many available libraries, such as:
+* Manually, by navigating to Amazon SQS queues in the AWS console.
+* Programmatically, with many libraries available, such as:
 ** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[boto3 library for Python^]
 ** https://aws.amazon.com/sdk-for-net/[AWS SDK for .NET^]
 ** https://aws.amazon.com/sdk-for-java/[AWS SDK for Java^]
@@ -17,7 +17,7 @@ AWS provides several ways to interact with Iridium CloudConnect SBD queues, incl
 
 === Receiving mobile-originated (MO) messages
 
-The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then delete the messages.
+The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. After messages are received, save your database to process the messages. Then delete the messages.
 
 NOTE: As a precaution in case of a connectivity issue, Amazon SQS doesn't automatically delete a message after receiving it. To delete a message, you must send a separate request after receiving it. See https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html[Receiving and deleting messages (console)^].
 
@@ -61,7 +61,7 @@ message.delete()
 
 === Sending mobile-terminated (MT) messages
 
-Mobile-terminated messages are sent asynchronously. Therefore, when establishing a process by which MT messages are managed, it is recommended that you break it down into three separate procedures: link:#_sending[sending], link:#_polling_the_confirmation_message_queue[polling the confirmation message queue], and link:#_polling_the_error_message_queue[polling the error message queue].
+Mobile-terminated messages are sent asynchronously. Therefore, when establishing a management process for MT messages, it is recommended that you break the process down into three separate procedures: link:#_sending[sending], link:#_polling_the_confirmation_message_queue[polling the confirmation message queue], and link:#_polling_the_error_message_queue[polling the error message queue].
 
 ==== Sending
 
@@ -226,7 +226,7 @@ device ID.
 
 |payload |Contains the payload of the message.
 
-|api_version |Notes the SBD API version. Should always be 1.
+|api_version |Notes the SBD API version. The SBD API version should always be 1.
 |===
 
 ===== _Location information_
@@ -364,7 +364,7 @@ When a payload is included in the MT message, it will be queued after the curren
 
 |high_priority_message |Place the associated MT payload in queue based on priority level. |Boolean (true, false)
 
-|assign_mtmsn |When this flag is set, the GSS will use the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload. |Boolean (true, false)
+|assign_mtmsn |When this flag is set, the Generic Security Standard (GSS) API will use the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload. |Boolean (true, false)
 |===
 
 ==== MT confirmation message formatting

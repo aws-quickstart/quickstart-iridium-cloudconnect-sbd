@@ -3,6 +3,6 @@
 |Resource |This deployment uses
 
 // Space needed to maintain table headers
-|IAM roles |1
-|SQS queues |4
+|AWS Identity and Access Management (IAM) roles |1
+|Amazon SQS queues |4
 |===

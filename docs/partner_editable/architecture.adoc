@@ -11,6 +11,6 @@ image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 As shown in <<architecture1>>, the Quick Start sets up the following:
 
 * A highly-available architecture that spans multiple Availability Zones.*
-* Amazon SQS deployed into your existing virtual private cloud (VPC) to provide a highly available queueing service for your Iridium SBD messages. Messages are exchanged between your existing Iridium infrastructure and Amazon SQS through Iridium CloudConnect.
+* Amazon SQS deployed into your existing VPC to provide a highly available queueing service for your Iridium SBD messages. Messages are exchanged between your existing Iridium infrastructure and Amazon SQS through Iridium CloudConnect.
 
 *Deployed in a single, highly-available AWS Region with redundant Availability Zones. With this architecture, no single computer, network, or Availability Zone failure can render your Iridium SBD messages inaccessible.

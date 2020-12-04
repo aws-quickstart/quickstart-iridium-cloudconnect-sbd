@@ -4,43 +4,31 @@
 
 *Q.* I encountered a *CREATE_FAILED* error when I launched the Quick Start.
 
-*A.* If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with *Rollback on failure* set to *Disabled*. (This setting is under *Advanced* in the AWS CloudFormation console, *Options* page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
+*A.* If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with *Rollback on failure* set to *Disabled*. (This setting is under *Advanced* in the AWS CloudFormation console, *Options* page.) With this setting, the stack’s state is retained and the instance remains running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
 // If you’re deploying on Linux instances, provide the location for log files on Linux, or omit this sentence.
 
-WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting. For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^] on the AWS website.
+WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Ensure that you delete the stack when you finish troubleshooting. For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^] on the AWS website.
 
 *Q.* I encountered a size limitation error when I deployed the AWS CloudFormation template.
 
-*A.* We recommend that you launch the Quick Start template from the link:#_launch_the_quick_start[link] provided earlier in this guide or from another S3 bucket. If you deploy the templats from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS Cloud Formation quotas^].
+*A.* We recommend that you launch the Quick Start template from the link:#_launch_the_quick_start[link] provided earlier in this guide or from another S3 bucket. If you deploy the template from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS Cloud Formation quotas^].
 
-*Q.* How do I get access to Iridium CloudConnect? I already use the
-DirectIP channel. How do I get started with a development environment?.
+*Q.* I already use DirectIP service to send and receive Iridium messages. How do I get access to Iridium CloudConnect?
 
-*A.* Customers can connect their development environment to the Iridium
-CloudConnect service and use devices of their choice. Iridium expects
-most customers to have one Iridium CloudConnect instance for their
-development environments and another for their production system. This aligns
-with the way customers have traditionally set up DirectIP destinations.
-Partners can explore Iridium CloudConnect regardless of their existing
-connection method to Iridium SBD. Please reach out to your channel
-manager for a customized technical brief to address your specific
-back-end situation and configuration. Most customers have messages
-routed using their traditional method and through Iridium CloudConnect
-and use comparative testing to verify operations and utility.
+*A.* Partners can explore Iridium CloudConnect regardless of their existing connection method to Iridium SBD. Contact your Iridium channel manager for a technical brief tailored to your specific configuration.
+
+*Q.* How do I get started with an Iridium CloudConnect development environment?
+
+*A.* Most Iridium customers set up two Iridium CloudConnect instances, one for their development environments and another for their production system. This aligns with the way Iridium customers traditionally set up DirectIP deployments. Also, you can route messages using your traditional method and through Iridium CloudConnect, and use comparative testing to verify Iridium CloudConnect operations and utility.
 
 *Q.* What is the pricing for Iridium CloudConnect? Who pays for the AWS
 compute resources?
 
-*A.* Iridium is currently not assessing a usage charge for sending
-messages through Iridium CloudConnect instead of another method such as
-DirectIP. Iridium, however, prefers that customers use Iridium CloudConnect for
-development and production environments. As such, Iridium may
-direct customers away from using SMTP (e-mail) for message exchange to
-the SBD gateway for production environment activity.
+*A.* Iridium does not assess a charge for sending messages through Iridium CloudConnect instead of another method such as DirectIP. Iridium, however, prefers that customers use Iridium CloudConnect for development and production environments. As such, Iridium may
+direct customers away from using SMTP (e-mail) for message exchange to the SBD gateway for production environment activity.
 
 *Q.* How do you ensure message ordering? Do you use Amazon SQS FIFO (First-In-First-Out)?.
 
 *A.* Iridium processes messages from the SBD gateway in order of receipt but
-does not specifically use an AWS Lambda instance for it. During the setup of Iridium CloudConnect,
-customers can choose FIFO or non-FIFO configurations. FIFO queues will keep
+does not specifically use an AWS Lambda instance to do this. During the setup of Iridium CloudConnect, customers can choose FIFO or non-FIFO configurations. FIFO queues keep
 messages in order.
