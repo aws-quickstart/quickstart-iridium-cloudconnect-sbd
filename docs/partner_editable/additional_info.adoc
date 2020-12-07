@@ -2,24 +2,24 @@
 //Should any sections not be applicable, remove them
 
 
-=== Interacting with your Amazon SQS Queues
+=== Interacting with your Amazon SQS queues
 
 AWS provides several ways to interact with Iridium CloudConnect SBD queues, including:
 
 * Via the command line, using the https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html[AWS Command Line Interface (AWS CLI)^].
 
-* Manually, by navigating to Amazon SQS queues in the AWS console.
+* Manually, by navigating to Amazon SQS queues in the AWS Management Console.
 * Programmatically, with many libraries available, such as:
-** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[boto3 library for Python^]
+** https://boto3.amazonaws.com/v1/documentation/api/latest/index.html[Boto3 library for Python^]
 ** https://aws.amazon.com/sdk-for-net/[AWS SDK for .NET^]
 ** https://aws.amazon.com/sdk-for-java/[AWS SDK for Java^]
 ** https://aws.amazon.com/sdk-for-ruby/[AWS SDK for Ruby^]
 
-=== Receiving mobile-originated (MO) messages
+=== Receiving mobile-originated messages
 
-The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. After messages are received, save your database to process the messages. Then delete the messages.
+The recommended approach for receiving mobile-originated (MO) messages is to long-poll the ICCMO.fifo queue. After messages are received, save your database to process the messages, and then delete the messages.
 
-NOTE: As a precaution in case of a connectivity issue, Amazon SQS doesn't automatically delete a message after receiving it. To delete a message, you must send a separate request after receiving it. See https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html[Receiving and deleting messages (console)^].
+NOTE: As a precaution in case of connectivity issues, Amazon SQS doesn't automatically delete messages when they're received. To delete a message, you must send a separate request after receiving it. For more information, see https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html[Receiving and deleting messages (console)^].
 
 ```
 # Get the service resource
@@ -59,9 +59,9 @@ for message in queue.receive_messages(WaitTimeSeconds=30):
 message.delete()
 ```
 
-=== Sending mobile-terminated (MT) messages
+=== Sending mobile-terminated messages
 
-Mobile-terminated messages are sent asynchronously. Therefore, when establishing a management process for MT messages, it is recommended that you break the process down into three separate procedures: link:#_sending[sending], link:#_polling_the_confirmation_message_queue[polling the confirmation message queue], and link:#_polling_the_error_message_queue[polling the error message queue].
+Mobile-terminated messages (MT) are sent asynchronously. Therefore, when establishing a management process for MT messages, it is recommended that you break the process down into three separate procedures: link:#_sending[sending], link:#_polling_the_confirmation_message_queue[polling the confirmation message queue], and link:#_polling_the_error_message_queue[polling the error message queue].
 
 ==== Sending
 
@@ -155,7 +155,7 @@ Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). T
 // |Port |XXXXXX |Unique number associated with customer
 // |===
 
-=== Data Format
+=== Data format
 
 When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect. 
 
@@ -183,7 +183,7 @@ The JSON object contains information about the device, message payload, and head
     }
 }
 ```
-NOTE: See the Iridium Short Burst Data Service Developers Guide for more information about message specifications.
+NOTE: See the Iridium SBD Service Developers Guide for more information about message specifications.
 
 ==== Mobile-originated message formatting
 
