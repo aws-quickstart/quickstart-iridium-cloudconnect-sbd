@@ -1,7 +1,7 @@
 // Replace the content in <>
 // Identify your target audience and explain how/why they would use this Quick Start.
 //Avoid borrowing text from third-party websites (copying text from AWS service documentation is fine). Also, avoid marketing-speak, focusing instead on the technical aspect.
-This Quick Start reference deployment guide contains step-by-step instructions for deploying Iridium CloudConnect for Short Burst Data (SBD) on the AWS Cloud.
+This Quick Start reference deployment guide contains step-by-step instructions for deploying Iridium CloudConnect for Short Burst Data (SBD) on an Iridium user's existing AWS Cloud instance.
 
 The Quick Start is for Iridium users who want to configure cross-account permissions for Iridium CloudConnect to access Amazon Simple Queue Service (Amazon SQS) queues that store their Iridium SBD messages.
 
