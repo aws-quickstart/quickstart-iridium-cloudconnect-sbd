@@ -337,7 +337,7 @@ Use the following formatting to build mobile-terminated messages:
   "assign_mtmsn" : false
 }
 ```
-NOTE: See the Iridium Short Burst Data Service Developers Guide for allowed combinations. For field details, see the link:#_top_level_mt_keys[Top-level MT keys] table below.
+NOTE: See the Iridium Short Burst Data Service Developers Guide for allowed combinations. For field details, see the following link:#_top_level_mt_keys[Top-level MT keys] table.
 
 ===== _Top-level MT keys_
 
@@ -407,8 +407,8 @@ NOTE: For field details, see the following link:#_keys[Keys] and link:#_mt_confi
 |===
 |Status |Description
 
-|1-50 |Successful, order of message in the MT message queue.
-|0 |Successful, no payload in message.
+|1&#8211;50 |Order in the MT message queue of the successfully received payload. 
+|0 |Message with a zero-byte payload received successfully (i.e., a mailbox check).
 |-1 |IMEI has too few characters, non-numeric characters.
 |-2 |Unknown IMEI – is not provisioned on the Iridium gateway.
 |-3 |Payload size exceeds the maximum allowed.
@@ -419,7 +419,7 @@ NOTE: For field details, see the following link:#_keys[Keys] and link:#_mt_confi
 |-8 |Ring alerts to the given IMEI are disabled.
 |-9 |IMEI is not attached (i.e., not set to receive ring alerts).
 |-10 |Source IP address was rejected by MT filter.
-|-11 |MTMSN value is out of range (valid range is 1-65,535).
+|-11 |MTMSN value is out of range (valid range is 1&#8211;65,535).
 |===
 
 NOTE: For transceiver message sizes and other specifications, see the Iridium Short Burst Data Service Developers Guide.
