@@ -157,9 +157,7 @@ Devices must be provisioned using Iridium SPNet or Iridium Web Services (IWS). T
 
 === Data format
 
-When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect. 
-
-The JSON object contains information about the device, message payload, and header, in the following format:
+When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect. The JSON object contains information about the device, message payload, and header, in the following format:
 
 ```
 {
