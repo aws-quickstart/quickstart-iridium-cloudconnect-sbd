@@ -8,14 +8,11 @@ AWS Cloud.
 [link=images/architecture_diagram.png]
 image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 
-As shown in <<architecture1>>, the Quick Start sets up the following:
+As shown in <<architecture1>>, the Quick Start sets up the following in your existing AWS virtual private cloud (VPC):
 
-* A highly-available architecture deployed into your existing VPC.
-//TODO do I need this first bullet?
 * Amazon SQS to provide a highly available queueing service for Iridium SBD messages. This deployment configures the following queues:
 ** Mobile-originated
 ** Mobile-terminated
 ** Mobile-terminated confirmation
 ** Mobile-terminated error
-* An AWS Identity and Access Management (IAM) role and policy to allow access to SQS queues by the existing Iridium AWS account. 
-
+* An AWS Identity and Access Management (IAM) role and policy to set up Iridium CloudConnect cross-account authentication. 
