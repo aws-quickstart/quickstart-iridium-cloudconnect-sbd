@@ -8,7 +8,7 @@ AWS Cloud.
 [link=images/architecture_diagram.png]
 image::../images/architecture_diagram.png[Architecture,width=648,height=439]
 
-As shown in <<architecture1>>, the Quick Start sets up the following in your existing AWS virtual private cloud (VPC):
+As shown in <<architecture1>>, the Quick Start deploys the following in your existing AWS virtual private cloud (VPC):
 
 * Amazon SQS to provide a highly available queueing service for Iridium SBD messages. This deployment configures the following queues:
 ** Mobile-originated

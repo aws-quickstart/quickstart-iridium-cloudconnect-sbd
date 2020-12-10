@@ -181,7 +181,7 @@ When Iridium CloudConnect processes data from your device, it puts it in a JSON 
     }
 }
 ```
-NOTE: See the Iridium SBD Service Developers Guide for more information about message specifications.
+NOTE: For more information about message specifications, see the https://www.iridium.com/ifp/[Iridium Short Burst Data Service Developers Guide].
 
 ==== Mobile-originated message formatting
 
@@ -335,7 +335,7 @@ Use the following formatting to build mobile-terminated messages:
   "assign_mtmsn" : false
 }
 ```
-NOTE: See the Iridium Short Burst Data Service Developers Guide for allowed combinations. For field details, see the following link:#_top_level_mt_keys[Top-level MT keys] table.
+NOTE: For more information about allowed combinations, see the https://www.iridium.com/ifp/[Iridium Short Burst Data Service Developers Guide]. For field details, see the following link:#_top_level_mt_keys[Top-level MT keys] table.
 
 ===== _Top-level MT keys_
 
@@ -420,4 +420,4 @@ NOTE: For field details, see the following link:#_keys[Keys] and link:#_mt_confi
 |-11 |MTMSN value is out of range (valid range is 1&#8211;65,535).
 |===
 
-NOTE: For transceiver message sizes and other specifications, see the Iridium Short Burst Data Service Developers Guide.
+NOTE: For transceiver message sizes and other specifications, see the https://www.iridium.com/ifp/[Iridium Short Burst Data Service Developers Guide].
