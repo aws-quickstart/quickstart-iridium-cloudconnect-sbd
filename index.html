@@ -799,18 +799,18 @@ p.footer-text a{color:#d7d8d8}
 <li><a href="#_specialized_knowledge">Specialized knowledge</a></li>
 <li><a href="#_aws_account">AWS account</a></li>
 <li><a href="#_technical_requirements">Technical requirements</a></li>
-<li><a href="#_iridium_partner_or_customer">Iridium Partner or Customer</a></li>
+<li><a href="#_iridium_partner_or_customer">Iridium partner or customer</a></li>
 </ul>
 </li>
 <li><a href="#_deployment_steps">Deployment steps</a>
 <ul class="sectlevel2">
 <li><a href="#_sign_in_to_your_aws_account">Sign in to your AWS account</a></li>
 <li><a href="#_launch_the_quick_start">Launch the Quick Start</a></li>
-<li><a href="#_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS Queues</a></li>
-<li><a href="#_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</a></li>
-<li><a href="#_sending_mobile_terminated_mt_messages">Sending mobile-terminated (MT) messages</a></li>
+<li><a href="#_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS queues</a></li>
+<li><a href="#_receiving_mobile_originated_messages">Receiving mobile-originated messages</a></li>
+<li><a href="#_sending_mobile_terminated_messages">Sending mobile-terminated messages</a></li>
 <li><a href="#_provisioning">Provisioning</a></li>
-<li><a href="#_data_format">Data Format</a></li>
+<li><a href="#_data_format">Data format</a></li>
 </ul>
 </li>
 <li><a href="#_faq">FAQ</a></li>
@@ -837,9 +837,9 @@ p.footer-text a{color:#d7d8d8}
 </div>
 </div>
 <div class="paragraph text-center">
-<p><strong>November 2020</strong><br>
-<em>Jaco Botes, Jeremy Stock - Iridium Satellite LLC</em><br>
-<em>Tim Mattison, Andrew Glenn - AWS</em></p>
+<p><strong>December 2020</strong><br>
+<em>Jaco Botes and Jeremy Stock, Iridium Satellite LLC</em><br>
+<em>Tim Mattison and Andrew Glenn, AWS Quick Start team</em></p>
 </div>
 <div class="admonitionblock tip text-left">
 <table>
@@ -863,10 +863,10 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start reference deployment guide contains step-by-step instructions for deploying the Iridium CloudConnect for SBD on the AWS Cloud.</p>
+<p>This Quick Start reference deployment guide contains step-by-step instructions for deploying Iridium CloudConnect for Short Burst Data (SBD) on an Iridium customer&#8217;s existing AWS Virtual Private Cloud (VPC) environment.</p>
 </div>
 <div class="paragraph">
-<p>The Quick Start is for Iridium users that want to deploy Iridium CloudConnect into their AWS account and establish cross-account permissions for Iridium CloudConnect to access Amazon Simple Queue Service (Amazon SQS) queues that store their Iridium Short Burst Data (SBD) messages.</p>
+<p>The Quick Start is for Iridium users who want to receive their SBD device data in Amazon Simple Queue Service (Amazon SQS) queues in JavaScript Object Notation (JSON) format.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -889,10 +889,7 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 <p>Iridium CloudConnect is a satellite cloud-based adapter service that transfers SBD messages from Iridium-based devices to the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>Using this Quick Start, you can launch Iridium CloudConnect into your existing AWS workload. Using Amazon Simple Queue Service (SQS), this deployment establishes the standard architecture to get SBD messages from devices on the Iridium network into queues stored on your AWS Virtual Private Cloud (VPC) environment.</p>
-</div>
-<div class="paragraph">
-<p>For more information about Iridium SBD message specifications, see the Iridium Short Burst Data Service Developers Guide.</p>
+<p>This Quick Start deploys Iridium CloudConnect into your existing AWS infrastructure. Using Amazon SQS, this deployment establishes the standard architecture to get SBD messages from devices on the Iridium network into queues stored on your AWS virtual private cloud (VPC).</p>
 </div>
 </div>
 </div>
@@ -928,7 +925,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>No software licenses are necessary. Iridium charges fees for messages, satellite network usage, and infrastructure setup, subject to the applicable license agreement and terms and conditions with Iridium. Contact your Iridium representative, VAR, or service provider for details.</p>
+<p>No software licenses are necessary. Iridium charges fees for messages, satellite network usage, and infrastructure setup, subject to applicable license agreements and terms and conditions with Iridium. Contact your Iridium representative, VAR, or service provider for details.</p>
 </div>
 </div>
 </div>
@@ -946,20 +943,33 @@ AWS Cloud.</p>
 <div class="title">Figure 1. Quick Start architecture for <em>Iridium CloudConnect</em> on AWS</div>
 </div>
 <div class="paragraph">
-<p>As shown in <a href="#architecture1">Figure 1</a>, the Quick Start sets up the following:</p>
+<p>As shown in <a href="#architecture1">Figure 1</a>, the Quick Start deploys the following in your existing AWS virtual private cloud (VPC):</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>A highly-available architecture that spans multiple Availability Zones.*</p>
+<p>Amazon SQS to provide a highly available queueing service for Iridium SBD messages. This deployment configures the following queues:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Mobile-originated</p>
 </li>
 <li>
-<p>Amazon SQS deployed into your existing virtual private cloud (VPC) to provide a highly available queueing service for your Iridium SBD messages. Messages are exchanged between your existing Iridium infrastructure and Amazon SQS through Iridium CloudConnect.</p>
+<p>Mobile-terminated</p>
+</li>
+<li>
+<p>Mobile-terminated confirmation</p>
+</li>
+<li>
+<p>Mobile-terminated error</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>*Deployed in a single, highly-available AWS Region with redundant Availability Zones. With this architecture, no single computer, network, or Availability Zone failure can render your Iridium SBD messages inaccessible.</p>
+</li>
+<li>
+<p>An AWS Identity and Access Management (IAM) role and policy to set up Iridium CloudConnect cross-account authentication.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -992,7 +1002,7 @@ AWS Cloud.</p>
 <div class="sect3">
 <h4 id="_resource_quotas">Resource quotas</h4>
 <div class="paragraph">
-<p>If necessary, request <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">service quota increases</a> for the following resources. You might need to request increases if your existing deployment currently uses these resources and if this Quick Start deployment could result in exceeding the default quotas. The <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">Service Quotas console</a> displays your usage and quotas for some aspects of some services. For more information, see <a href="https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html" target="_blank" rel="noopener">What is Service Quotas?</a> and <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html" target="_blank" rel="noopener">AWS service quotas</a>.</p>
+<p>If necessary, request <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">service quota increases</a> for the following resources. You might request quota increases to avoid exceeding the default limits for any resources that are shared across multiple deployments. The <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-2#!/" target="_blank" rel="noopener">Service Quotas console</a> displays your usage and quotas for some aspects of some services. For more information, see <a href="https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html" target="_blank" rel="noopener">What is Service Quotas?</a> and <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html" target="_blank" rel="noopener">AWS service quotas</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1007,11 +1017,11 @@ AWS Cloud.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">IAM roles</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS Identity and Access Management (IAM) roles</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SQS queues</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon SQS queues</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
 </tr>
 </tbody>
@@ -1020,7 +1030,7 @@ AWS Cloud.</p>
 <div class="sect3">
 <h4 id="_supported_regions">Supported Regions</h4>
 <div class="paragraph">
-<p>This Quick Start is supported in all available regions.</p>
+<p>This Quick Start is supported in all available Regions.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1043,11 +1053,9 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_iridium_partner_or_customer">Iridium Partner or Customer</h3>
+<h3 id="_iridium_partner_or_customer">Iridium partner or customer</h3>
 <div class="paragraph">
-<p>If you are not already an Iridium partner or customer, visit
-<a href="http://www.iridium.com">www.iridium.com</a> to learn more. Existing Iridium customers that are not
-direct Iridium Value-Added Retailers (VARs) should check with their service provider if Iridium CloudConnect is provided. You can also visit <a href="https://www.iridium.com/who-is-my-sp/">Who&#8217;s My Service Provider?</a> on the Iridium web site. Iridium maintains a list of approved Iridium CloudConnect service providers.</p>
+<p>If you are not already an Iridium partner or customer, navigate to <a href="http://www.iridium.com">Iridium</a> to learn more. Existing Iridium customers that are not direct Iridium Value-Added Retailers (VARs) should inquire with their service provider if Iridium CloudConnect is available. Iridium maintains a list of approved Iridium CloudConnect service providers. For more information, see <a href="https://www.iridium.com/who-is-my-sp/">Who&#8217;s My Service Provider?</a></p>
 </div>
 <div class="sect3">
 <h4 id="_deployment_options">Deployment options</h4>
@@ -1068,6 +1076,18 @@ direct Iridium Value-Added Retailers (VARs) should check with their service prov
 <div class="sect1">
 <h2 id="_deployment_steps">Deployment steps</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Each deployment takes about 10 minutes to complete.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_sign_in_to_your_aws_account">Sign in to your AWS account</h3>
 <div class="olist arabic">
@@ -1090,7 +1110,7 @@ direct Iridium Value-Added Retailers (VARs) should check with their service prov
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
+You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For more information, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
 </td>
 </tr>
 </table>
@@ -1120,7 +1140,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for Iridium CloudConnect will be built. The template is launched in the us-east-1 Region by default.</p>
+<p>The AWS Region that&#8217;s displayed in the upper-right corner of the navigation bar is where the network infrastructure for Iridium CloudConnect is built. The template is deployed in the us-east-1 Region by default. Change it if necessary.</p>
 </li>
 </ol>
 </div>
@@ -1130,7 +1150,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>On the <strong>Create stack</strong> page, keep the default setting for the template URL, and then choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. Each deployment takes about 10 minutes to complete.</p>
+<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the template parameters and provide values for any parameters that require input. For more information, see the <a href="#_parameter_reference">Parameter reference</a> section, later in this guide.</p>
 </li>
 </ol>
 </div>
@@ -1161,7 +1181,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 </div>
 </div>
 <div class="sect2">
-<h3 id="_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS Queues</h3>
+<h3 id="_interacting_with_your_amazon_sqs_queues">Interacting with your Amazon SQS queues</h3>
 <div class="paragraph">
 <p>AWS provides several ways to interact with Iridium CloudConnect SBD queues, including:</p>
 </div>
@@ -1171,14 +1191,14 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>Via the command line, using the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html" target="_blank" rel="noopener">AWS Command Line Interface (AWS CLI)</a>.</p>
 </li>
 <li>
-<p>Manually, by navigating to Amazon SQS in the AWS console to view the queues.</p>
+<p>Manually, by navigating to Amazon SQS queues in the AWS Management Console.</p>
 </li>
 <li>
-<p>Programmatically, with many available libraries, such as:</p>
+<p>Programmatically, with many libraries available, such as:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_blank" rel="noopener">boto3 library for Python</a></p>
+<p><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_blank" rel="noopener">Boto3 library for Python</a></p>
 </li>
 <li>
 <p><a href="https://aws.amazon.com/sdk-for-net/" target="_blank" rel="noopener">AWS SDK for .NET</a></p>
@@ -1196,9 +1216,9 @@ You are responsible for the cost of the AWS services used while running this Qui
 </div>
 </div>
 <div class="sect2">
-<h3 id="_receiving_mobile_originated_mo_messages">Receiving mobile-originated (MO) messages</h3>
+<h3 id="_receiving_mobile_originated_messages">Receiving mobile-originated messages</h3>
 <div class="paragraph">
-<p>The recommended approach for receiving MO messages is to long-poll the ICCMO.fifo queue. When messages are received, save your database to process the messages. Then delete the messages.</p>
+<p>The recommended approach for receiving mobile-originated (MO) messages is to long-poll the ICCMO.fifo queue. After messages are received, save your database to process the messages, and then delete the messages.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1207,7 +1227,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As a precaution in case of a connectivity issue, Amazon SQS doesn&#8217;t automatically delete a message after receiving it. To delete a message, you must send a separate request after receiving it. See <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html" target="_blank" rel="noopener">Receiving and deleting messages (console)</a>.
+As a precaution in case of connectivity issues, Amazon SQS doesn&#8217;t automatically delete messages when they&#8217;re received. To delete a message, you must send a separate request after receiving it. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html" target="_blank" rel="noopener">Receiving and deleting messages (console)</a>.
 </td>
 </tr>
 </table>
@@ -1253,14 +1273,14 @@ message.delete()</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sending_mobile_terminated_mt_messages">Sending mobile-terminated (MT) messages</h3>
+<h3 id="_sending_mobile_terminated_messages">Sending mobile-terminated messages</h3>
 <div class="paragraph">
-<p>Mobile-terminated messages are sent asynchronously. Therefore, when establishing a process by which MT messages are managed, it is recommended that you break it down into three separate procedures: <a href="#_sending">sending</a>, <a href="#_polling_the_confirmation_message_queue">polling the confirmation message queue</a>, and <a href="#_polling_the_error_message_queue">polling the error message queue</a>.</p>
+<p>Mobile-terminated messages (MT) are sent asynchronously. Therefore, when establishing a management process for MT messages, it is recommended that you break the process down into three separate procedures: <a href="#_sending">sending</a>, <a href="#_polling_the_confirmation_message_queue">polling the confirmation message queue</a>, and <a href="#_polling_the_error_message_queue">polling the error message queue</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="_sending">Sending</h4>
 <div class="paragraph">
-<p>When sending IT messages, uniquely identify each message with an integer, and send the message to the ICCMT.fifo queue. For example:</p>
+<p>When sending IT messages, uniquely identify each message with an integer, and then send the message to the ICCMT.fifo queue. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1355,12 +1375,9 @@ message.delete()</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_data_format">Data Format</h3>
+<h3 id="_data_format">Data format</h3>
 <div class="paragraph">
-<p>When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect.</p>
-</div>
-<div class="paragraph">
-<p>The JSON object contains information about the device, message payload, and header, in the following format:</p>
+<p>When Iridium CloudConnect processes data from your device, it puts it in a JSON object that is exchanged between Amazon SQS and the Iridium gateway through Iridium CloudConnect. The JSON object contains information about the device, message payload, and header, in the following format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1393,7 +1410,7 @@ message.delete()</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See the Iridium Short Burst Data Service Developers Guide for more information about message specifications.
+For more information about message specifications, see the <a href="https://www.iridium.com/ifp/">Iridium Short Burst Data Service Developers Guide</a>.
 </td>
 </tr>
 </table>
@@ -1433,13 +1450,13 @@ See the Iridium Short Burst Data Service Developers Guide for more information a
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-For field details, see the tables below.
+For field details, see the following tables.
 </td>
 </tr>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_top_level_mo_keys"><em>Top level MO keys</em></h5>
+<h5 id="_top_level_mo_keys"><em>Top-level MO keys</em></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1464,11 +1481,11 @@ device ID.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">payload</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Contains the payload of the message.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contains the message payload.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">api_version</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Notes the SBD API version. Should always be 1.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Notes the SBD API version. The SBD API version should always be 1.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1493,18 +1510,17 @@ device ID.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">latitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Contains the latitude of the device down to thousandths of a
 minute.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Float to the thousandths of a minute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Floating point (thousandths of a minute)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">longitude</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Contains the longitude of the device down to thousandths of
 a minute.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Float to the thousandths of a minute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Floating point (thousandths of a minute)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cep_radius</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">This field provides an estimate of the accuracy of the
-ISU’s location.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides an estimate of the Iridium Subscriber Unit&#8217;s (ISU&#8217;s) location accuracy.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
 </tr>
 </tbody>
@@ -1528,19 +1544,19 @@ ISU’s location.</p></td>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cdr_reference</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Call detail record, also known as auto ID. Unique identifier for a given message in the Iridium gateway database.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Call detail record, also known as auto ID. It&#8217;s a unique identifier for a given message in the Iridium gateway database.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10-digit number</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">International Mobile Equipment Identity (IMEI). Unique equipment identifier, also known as device ID.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">International Mobile Equipment Identity (IMEI), a unique equipment identifier also known as device ID.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">15-digit number</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mtmsn</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-terminated message sequence number (MTMSN)
 associated with the SBD session. This value is set by the Iridium gateway at the time that an MT message is queued for delivery. It is unique to each IMEI. It is then sent to the IMEI as part of the MT payload transfer.</p>
-<p class="tableblock">If an MT payload transfer was attempted, the MTMSN will be included in the header regardless of the success of the session. If the session failed, the payload is still queued for delivery. If no MT delivery attempt was made in the session, this value will be zero.</p></td>
+<p class="tableblock">If an MT payload transfer is attempted, the MTMSN is included in the header regardless session&#8217;s success. If the session fails, the payload still queues for delivery. If no MT delivery attempt is made in the session, this value is zero.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">5- digit number</p></td>
 </tr>
 <tr>
@@ -1555,7 +1571,7 @@ associated with the SBD session. This value is set by the Iridium gateway at the
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">time_of_session</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">This field provides a UTC timestamp of the IMEI session between the IMEI and the Iridium Gateway.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides a UTC timestamp of the IMEI session between the IMEI and the Iridium Gateway.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Timestamp</p></td>
 </tr>
 </tbody>
@@ -1579,42 +1595,42 @@ associated with the SBD session. This value is set by the Iridium gateway at the
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The SBD session completed successfully.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SBD session completed successfully.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">sbd_session_successful</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The MO message transfer, if any, was successful. The MT message queued at the Iridium gateway is too large to be transferred within a single SBD session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MO message transfer, if any, was successful. The MT message queued at the Iridium gateway is too large to be transferred within a single SBD session.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mt_message_too_large</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The MO message transfer, if any, was successful. The reported location was determined to be of unacceptable quality. This value is only applicable to IMEIs using SBD protocol revision 1.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MO message transfer, if any, was successful. The reported location is an unacceptable quality. This value is only applicable to IMEIs using SBD protocol revision 1.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">unacceptable_quality</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The SBD session timed out before session completion.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SBD session timed out before session completed.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">session_timeout</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The MO message being transferred by the IMEI is too large to be transferred within a single SBD session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MO message transferred by the IMEI is too large to be transferred within a single SBD session.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">mo_message_too_large</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An RF link loss occurred during the SBD session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RF link loss occurred during the SBD session.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">rf_link_loss</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An IMEI protocol anomaly occurred during SBD session.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IMEI protocol anomaly occurred during SBD session.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei_anomaly</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The IMEI is prohibited from accessing the Iridium gateway.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IMEI is prohibited from accessing the Iridium gateway.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei_prohibited</p></td>
 </tr>
 </tbody>
@@ -1706,7 +1722,7 @@ associated with the SBD session. This value is set by the Iridium gateway at the
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See the Iridium Short Burst Data Service Developers Guide for allowed combinations. For field details, see the <a href="#_top_level_mt_keys">Top-level MT keys</a> table below.
+For more information about allowed combinations, see the <a href="https://www.iridium.com/ifp/">Iridium Short Burst Data Service Developers Guide</a>. For field details, see the following <a href="#_top_level_mt_keys">Top-level MT keys</a> table.
 </td>
 </tr>
 </table>
@@ -1734,34 +1750,33 @@ See the Iridium Short Burst Data Service Developers Guide for allowed combinatio
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">message</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The payload of the MT message</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Payload of the MT message.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">imei</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unique Equipment Identifier of the device that will receive an MT message.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique equipment identifier of the device that receives an MT message.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">15-digit number</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">flush_mt_queue</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to true, all payloads in the MT queue for the
-given IMEI are deleted. This provides an integrated method to administer MT queues.</p>
-<p class="tableblock">When a payload is included in the MT message, it will be queued after the currently queued payloads, if any, have been deleted. This enables the vendor application to maintain a queue depth of one, overwriting any previous payload queued.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to <code>true</code>, all payloads in the MT queue for the given IMEI are deleted. This provides an integrated method to administer MT queues.</p>
+<p class="tableblock">When an MT message includes a payload, it is queued after the currently queued payloads, if any, are deleted. This enables the vendor application to maintain a queue depth of one, overwriting any previously queued payloads.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">send_ring_alert_no_payload</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to true, the Iridium gateway is directed to send a SBD ring alert to the specified IMEI within the bounds of normal SBD ring alert processing, even though no new MT message is being queued.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to <code>true</code>, the Iridium gateway sends an SBD ring alert to the specified IMEI, even though no new MT payload is queued.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">high_priority_message</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Place the associated MT payload in queue based on priority level.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Places the associated MT payload in the queue according to priority level.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">assign_mtmsn</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set, the GSS will use the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this flag is set to <code>true</code>, the Generic Security Standard (GSS) API uses the value in the Unique ID field in the message header as the MTMSN for the associated MT message payload.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Boolean (true, false)</p></td>
 </tr>
 </tbody>
@@ -1791,7 +1806,7 @@ given IMEI are deleted. This provides an integrated method to administer MT queu
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmation_status_values">MT confirmation status values</a> tables below.
+For field details, see the following <a href="#_keys">Keys</a> and <a href="#_mt_confirmation_status_values">MT confirmation status values</a> tables.
 </td>
 </tr>
 </table>
@@ -1848,36 +1863,36 @@ For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmat
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1-50</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successful, order of message in the MT message queue.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1&#8211;50</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Order in the MT message queue of the successfully received payload.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Successful, no payload in message.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message with a zero-byte payload received successfully (i.e., a mailbox check).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Invalid IMEI – too few characters, non-numeric characters.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IMEI has too few characters, non-numeric characters.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unknown IMEI – not provisioned on the Iridium gateway.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unknown IMEI – is not provisioned on the Iridium gateway.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Payload size exceeded maximum allowed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Payload size exceeds the maximum allowed.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Payload expected, but none received.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No payload received.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MT message queue full (maximum of 50).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MT message queue is full (maximum of 50).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-6</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MT resources unavailable.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MT resources are unavailable.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-7</p></td>
@@ -1889,15 +1904,15 @@ For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmat
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-9</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The given IMEI is not attached (not set to receive ring alerts).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IMEI is not attached (i.e., not set to receive ring alerts).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Source IP address rejected by MT filter.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source IP address was rejected by MT filter.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MTMSN value is out of range (valid range is 1 – 65,535).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MTMSN value is out of range (valid range is 1&#8211;65,535).</p></td>
 </tr>
 </tbody>
 </table>
@@ -1908,7 +1923,7 @@ For field details, see the <a href="#_keys">Keys</a> and <a href="#_mt_confirmat
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-See the Iridium Short Burst Data Service Developers Guide for transceiver message sizes and other specifications.
+For transceiver message sizes and other specifications, see the <a href="https://www.iridium.com/ifp/">Iridium Short Burst Data Service Developers Guide</a>.
 </td>
 </tr>
 </table>
@@ -1925,7 +1940,7 @@ See the Iridium Short Burst Data Service Developers Guide for transceiver messag
 <p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. (This setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong> page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)</p>
+<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. (This setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong> page.) With this setting, the stack’s state is retained and the instance remains running, so you can troubleshoot the issue. (For Windows, look at the log files in <code>%ProgramFiles%\Amazon\EC2ConfigService</code> and <code>C:\cfn\log</code>.)</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1934,7 +1949,7 @@ See the Iridium Short Burst Data Service Developers Guide for transceiver messag
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting. For additional information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting AWS CloudFormation</a> on the AWS website.
+When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Ensure that you delete the stack when you finish troubleshooting. For additional information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting AWS CloudFormation</a> on the AWS website.
 </td>
 </tr>
 </table>
@@ -1943,45 +1958,32 @@ When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, 
 <p><strong>Q.</strong> I encountered a size limitation error when I deployed the AWS CloudFormation template.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> We recommend that you launch the Quick Start template from the <a href="#_launch_the_quick_start">link</a> provided earlier in this guide or from another S3 bucket. If you deploy the templats from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS Cloud Formation quotas</a>.</p>
+<p><strong>A.</strong> We recommend that you launch the Quick Start template from the <a href="#_launch_the_quick_start">link</a> provided earlier in this guide or from another S3 bucket. If you deploy the template from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS CloudFormation quotas</a>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Q.</strong> How do I get access to Iridium CloudConnect? I already use the
-DirectIP channel. How do I get started with a development environment?.</p>
+<p><strong>Q.</strong> I already use DirectIP service to send and receive Iridium messages. How do I get access to Iridium CloudConnect?</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> Customers can connect their development environment to the Iridium
-CloudConnect service and use devices of their choice. Iridium expects
-most customers to have one Iridium CloudConnect instance for their
-development environments and another for their production system. This aligns
-with the way customers have traditionally set up DirectIP destinations.
-Partners can explore Iridium CloudConnect regardless of their existing
-connection method to Iridium SBD. Please reach out to your channel
-manager for a customized technical brief to address your specific
-back-end situation and configuration. Most customers have messages
-routed using their traditional method and through Iridium CloudConnect
-and use comparative testing to verify operations and utility.</p>
+<p><strong>A.</strong> Partners can explore Iridium CloudConnect regardless of their existing connection method to Iridium SBD. Contact your Iridium channel manager for a technical brief tailored to your specific configuration.</p>
 </div>
 <div class="paragraph">
-<p><strong>Q.</strong> What is the pricing for Iridium CloudConnect? Who pays for the AWS
-compute resources?</p>
+<p><strong>Q.</strong> How do I get started with an Iridium CloudConnect development environment?</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> Iridium is currently not assessing a usage charge for sending
-messages through Iridium CloudConnect instead of another method such as
-DirectIP. Iridium, however, prefers that customers use Iridium CloudConnect for
-development and production environments. As such, Iridium may
-direct customers away from using SMTP (e-mail) for message exchange to
-the SBD gateway for production environment activity.</p>
+<p><strong>A.</strong> Most Iridium customers set up two Iridium CloudConnect instances, one for their development environments and another for their production system. This aligns with the way Iridium customers traditionally set up DirectIP deployments. Also, you can route messages using your traditional method and through Iridium CloudConnect, and use comparative testing to verify Iridium CloudConnect operations and utility.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q.</strong> What is the pricing for Iridium CloudConnect? Who pays for the AWS compute resources?</p>
+</div>
+<div class="paragraph">
+<p><strong>A.</strong> Iridium does not assess a charge for sending messages through Iridium CloudConnect instead of another method such as DirectIP. Iridium, however, prefers that customers use Iridium CloudConnect for development and production environments. As such, Iridium may
+direct customers away from using SMTP (e-mail) for message exchange to the SBD gateway for production environment activity.</p>
 </div>
 <div class="paragraph">
 <p><strong>Q.</strong> How do you ensure message ordering? Do you use Amazon SQS FIFO (First-In-First-Out)?.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> Iridium processes messages from the SBD gateway in order of receipt but
-does not specifically use an AWS Lambda instance for it. During the setup of Iridium CloudConnect,
-customers can choose FIFO or non-FIFO configurations. FIFO queues will keep
-messages in order.</p>
+<p><strong>A.</strong> Iridium processes messages from the SBD gateway in order of receipt but does not specifically use an AWS Lambda instance to do this. During the setup of Iridium CloudConnect, customers can choose FIFO or non-FIFO configurations. FIFO queues keep messages in order.</p>
 </div>
 </div>
 </div>
@@ -2022,31 +2024,31 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 <td class="tableblock halign-left valign-top"><p class="tableblock">Iridium Role ARN
 (<code>IridiumRoleARN</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon Resource Number (ARN) of the role within the Iridium AWS account.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon Resource Number (ARN) of the role in the Iridium AWS account.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-originated queue name
 (<code>MobileOriginatedQueueName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ICCMO.fifo</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-originated queue in SQS.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-originated queue in Amazon SQS.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-terminated queue name
 (<code>MobileTerminatedQueueName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ICCMT.fifo</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated queue in SQS.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated queue in Amazon SQS.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-terminated confirmation queue name
 (<code>MobileTerminatedConfirmationQueueName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ICCMTConfirmation.fifo</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated confirmation queue in SQS.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated confirmation queue in Amazon SQS.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mobile-terminated error queue name
 (<code>MobileTerminatedErrorQueueName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ICCMTErrors.fifo</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated error queue in SQS.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the mobile-terminated error queue in Amazon SQS.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2101,8 +2103,8 @@ and to share your customizations with others.</p>
 </html>
 <!--
 repo commit:
-a25e130f06a59435c96a1d5ec9d111125dfb4e47
+2476ff27b038e642ad4a47bc59056bbb346c4b2e
 
 submodule config:
--ba08f0c2763297d3ea201b4cf2044ec53b7d00c6 docs/boilerplate
+-3a59ee2e008131fb887c5ebafed3c8a853272336 docs/boilerplate
 -->
