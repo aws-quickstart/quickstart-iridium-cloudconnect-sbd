@@ -1,3 +1,3 @@
 // Include details about the license and how they can sign up. If no license is required, clarify that. 
 
-No software licenses are necessary. Iridium charges fees for messages, satellite network usage, and infrastructure setup, subject to the applicable license agreement and terms and conditions with Iridium. Contact your Iridium representative, VAR, or service provider for details.
+No software licenses are necessary. Iridium charges fees for messages, satellite network usage, and infrastructure setup, subject to applicable license agreements and terms and conditions with Iridium. Contact your Iridium representative, VAR, or service provider for details.
