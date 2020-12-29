@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: "CloudFormation template for creating Amazon Simple Queue Service (Amazon SQS) queues and cross-account permission for Iridium CloudConnect to access the appropriate SQS queues. (qs-1qbcfsuje)"
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: Parameters for deploying into your existing VPC    
+    EntrypointName: Deploy into your desired Region.
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
