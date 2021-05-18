@@ -1,0 +1,6 @@
+# cfn module build
+cfn-module/*.zip
+cfn-module/*.json
+cfn-module/fragments/
+cfn-module/rpdk.log
+
