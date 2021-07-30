@@ -8,5 +8,5 @@ To submit code for this Quick Start, see thxe [AWS Quick Start Contributor's Kit
 d
 x
 ds
-xx
+xxs
 d
