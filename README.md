@@ -7,7 +7,7 @@ To post feedback, submit feature ideas, or report bugs, use the **Issues** secti
 To submit code for this Quick Start, see thxe [AWS Quick Start Contributor's Kit](https://aws-quickstart.github.io/).
 d
 x
-ds
+dss
 xxsd
 dd
 x
