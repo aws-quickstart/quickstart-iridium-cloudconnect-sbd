@@ -88,13 +88,6 @@ Resources:
             Effect: Allow
             Action:
               - sqs:SendMessage
-              - sqs:ReceiveMessage
-              - sqs:DeleteMessage
-            Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedSQSQueue.QueueName}"
-          -
-            Effect: Allow
-            Action:
-              - sqs:SendMessage
             Resource: !Sub "arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${MobileTerminatedConfirmationSQSQueue.QueueName}"
           -
             Effect: Allow
