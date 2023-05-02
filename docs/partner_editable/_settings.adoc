@@ -2,10 +2,10 @@
 :partner-product-name: Iridium CloudConnect for SBD
 :partner-product-short-name: Iridium CloudConnect
 :partner-company-name: Iridium Satellite LLC
-:doc-month: December
-:doc-year: 2020
-:partner-contributors: Jaco Botes and Jeremy Stock, {partner-company-name}
-:quickstart-contributors: Tim Mattison and Andrew Glenn, AWS Quick Start team
+:doc-month: May
+:doc-year: 2023
+:partner-contributors: Jaco Botes, {partner-company-name}
+:quickstart-contributors: Andrew Glenn, AWS Quick Start team
 :deployment_time: 10 minutes
 :default_deployment_region: us-east-1
 :parameters_as_appendix:
