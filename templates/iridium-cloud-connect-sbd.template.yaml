@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: "CloudFormation template for creating Amazon Simple Queue Service (Amazon SQS) queues and cross-account permission for Iridium CloudConnect to access the appropriate SQS queues. (qs-1qbcfsuje)"
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: Deploy into your desired Region.
+    EntrypointName: Parameters for deploying into your existing VPC    
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -27,23 +27,23 @@ Metadata:
         default: Mobile-terminated error queue name
 Parameters:
   IridiumRoleARN:
-    Description: Amazon Resource Number (ARN) of the role within the Iridium AWS account.
+    Description: Amazon Resource Number (ARN) of the role in the Iridium AWS account.
     Type: String
     AllowedPattern: 'arn:(aws|aws-cn|aws-us-gov):iam::.*:role/.*$'
   MobileOriginatedQueueName:
-    Description: Name of the mobile-originated queue in SQS.
+    Description: Name of the mobile-originated queue in Amazon SQS.
     Type: String
     Default: ICCMO.fifo
   MobileTerminatedQueueName:
-    Description: Name of the mobile-terminated queue in SQS.
+    Description: Name of the mobile-terminated queue in Amazon SQS.
     Type: String
     Default: ICCMT.fifo
   MobileTerminatedConfirmationQueueName:
-    Description: Name of the mobile-terminated confirmation queue in SQS.
+    Description: Name of the mobile-terminated confirmation queue in Amazon SQS.
     Type: String
     Default: ICCMTConfirmation.fifo
   MobileTerminatedErrorQueueName:
-    Description: Name of the mobile-terminated error queue in SQS.
+    Description: Name of the mobile-terminated error queue in Amazon SQS.
     Type: String
     Default: ICCMTErrors.fifo
 Resources:
