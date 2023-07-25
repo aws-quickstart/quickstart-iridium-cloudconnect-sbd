@@ -1,6 +1,0 @@
-
-:template_aws_iam_policy:
-:template_aws_iam_role:
-:template_aws_sqs_queue:
-:template_iam:
-:template_sqs:

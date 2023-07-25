@@ -1,0 +1,25 @@
+// Add any unique troubleshooting steps here.
+
+For troubleshooting common Partner Solution issues, refer to the https://fwd.aws/rA69w?[AWS Partner Solution General Information Guide^] and https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting CloudFormation^].
+
+=== FAW
+
+*Q.* I already use DirectIP service to send and receive Iridium messages. How do I get access to Iridium CloudConnect?
+
+*A.* Partners can explore Iridium CloudConnect regardless of their existing connection method to Iridium SBD. Contact your Iridium channel manager for a technical brief tailored to your specific configuration.
+
+*Q.* How do I get started with an Iridium CloudConnect development environment?
+
+*A.* Most Iridium customers set up two Iridium CloudConnect instances, one for their development environments and another for their production system. This aligns with the way Iridium customers traditionally set up DirectIP deployments. Also, you can route messages using your traditional method and through Iridium CloudConnect, and use comparative testing to verify Iridium CloudConnect operations and utility.
+
+*Q.* What is the pricing for Iridium CloudConnect? Who pays for the AWS compute resources?
+
+*A.* Iridium does not assess a charge for sending messages through Iridium CloudConnect instead of another method such as DirectIP. Iridium, however, prefers that customers use Iridium CloudConnect for development and production environments. As such, Iridium may
+direct customers away from using SMTP (e-mail) for message exchange to the SBD gateway for production environment activity.
+
+*Q.* How do you ensure message ordering? Do you use Amazon SQS FIFO (First-In-First-Out)?.
+
+*A.* Iridium processes messages from the SBD gateway in order of receipt but does not specifically use an AWS Lambda instance to do this. During the setup of Iridium CloudConnect, customers can choose FIFO or non-FIFO configurations. FIFO queues keep messages in order.
+
+// == Resources
+// Uncomment section and add links to any external resources that are specified by the partner.

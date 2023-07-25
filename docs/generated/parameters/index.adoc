@@ -1,2 +1,0 @@
-=== Parameters for deploying into your existing AWS infrastructure
-include::iridium-cloud-connect-sbd.template.adoc[]

@@ -1,0 +1,19 @@
+:xrefstyle: short
+
+Deploying this Partner Solution with default parameters builds the following {partner-product-short-name} environment in the
+AWS Cloud.
+
+// Replace this example diagram with your own. Follow our wiki guidelines: https://w.amazon.com/bin/view/AWS_Quick_Starts/Process_for_PSAs/#HPrepareyourarchitecturediagram. Upload your source PowerPoint file to the GitHub {deployment name}/docs/images/ directory in its repository.
+
+[#architecture1]
+.Partner Solution architecture for {partner-product-short-name} on AWS
+image::../docs/deployment_guide/images/architecture_diagram.png[Architecture]
+
+As shown in <<architecture1>>, this Partner Solution sets up the following:
+
+* Amazon SQS to provide a highly available queueing service for Iridium SBD messages. This deployment configures the following queues:
+** Mobile-originated
+** Mobile-terminated
+** Mobile-terminated confirmation
+** Mobile-terminated error
+* An AWS Identity and Access Management (IAM) role and policy to set up Iridium CloudConnect cross-account authentication. 

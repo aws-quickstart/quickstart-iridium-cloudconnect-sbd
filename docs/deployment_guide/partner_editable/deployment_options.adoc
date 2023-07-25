@@ -1,0 +1,5 @@
+// Edit this placeholder text as necessary to describe the deployment options.
+
+This Partner Solution provides a single deployment option:
+
+* https://fwd.aws/DzxKr[Deploy {partner-product-short-name} into your AWS account]. This option deploys {partner-product-short-name} into your existing AWS infrastructure.
