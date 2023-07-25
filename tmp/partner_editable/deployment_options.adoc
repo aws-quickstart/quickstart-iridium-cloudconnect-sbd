@@ -1,5 +1,0 @@
-// There are generally two deployment options. If additional are required, add them here
-
-This Quick Start provides a single deployment option:
-
-* *Deploy {partner-product-short-name} into your AWS account*. This option deploys {partner-product-short-name} into your existing AWS infrastructure.

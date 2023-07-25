@@ -1,6 +1,0 @@
-// Replace the content in <>
-// Briefly describe the software. Use consistent and clear branding. 
-// Include the benefits of using the software on AWS, and provide details on usage scenarios.
-Iridium CloudConnect is a satellite cloud-based adapter service that transfers SBD messages from Iridium-based devices to the AWS Cloud. 
-
-This Quick Start deploys Iridium CloudConnect into your existing AWS infrastructure. Using Amazon SQS, this deployment establishes the standard architecture to get SBD messages from devices on the Iridium network into queues stored on your AWS virtual private cloud (VPC).
