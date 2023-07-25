@@ -1,3 +1,7 @@
 //Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
 
 == Predeployment steps
+
+=== Iridium partner or customer 
+
+If you are not already an Iridium partner or customer, navigate to http://www.iridium.com[Iridium] to learn more. Existing Iridium customers that are not direct Iridium Value-Added Retailers (VARs) should inquire with their service provider if Iridium CloudConnect is available. Iridium maintains a list of approved Iridium CloudConnect service providers. For more information, see https://www.iridium.com/who-is-my-sp/[Who's My Service Provider?]

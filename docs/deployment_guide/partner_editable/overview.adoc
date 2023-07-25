@@ -1,7 +1,9 @@
 This guide covers the information you need to deploy the {partner-product-name} Partner Solution in the AWS Cloud.
 
 // Fill in the info in <angle brackets> for use on the landing page only: 
-This Amazon Web Services (AWS) Partner Solution deploys [<product name>](<partner's marketing product page>) in the AWS Cloud so that <purpose>. This solution is for <target users> who want to <do what> so that <why>. For more information, refer to the [<product name> documentation](<URL>).
+This Amazon Web Services (AWS) Partner Solution deploys {partner-product-name} in the AWS Cloud so that <purpose>. The Partner Solution is for Iridium users who want to receive their SBD device data in Amazon Simple Queue Service (Amazon SQS) queues in JavaScript Object Notation (JSON) format.
+
+This Partner Solution deployment guide assumes that you have some familiarity with Iridium Short Burst Data (SBD) devices and communications.
 
 // Deploying this solution does not guarantee an organization’s compliance with any laws, certifications, policies, or other regulations. [Uncomment this statement only for solutions that relate to compliance. We'll add the corresponding reference part to the landing page and get legal approval before publishing.]
 

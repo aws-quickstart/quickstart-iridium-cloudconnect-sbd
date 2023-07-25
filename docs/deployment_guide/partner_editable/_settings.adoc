@@ -1,15 +1,15 @@
-:partner-solution-project-name: partner-solution-repo-name
+:partner-solution-project-name: quickstart-iridium-cloudconnect
 :partner-solution-github-org: aws-quickstart
-:partner-product-name: Full Product Name
-:partner-product-short-name: Product Name
-:partner-company-name: Example Company Name, Ltd.
-:doc-month: January
+:partner-product-name: Iridium CloudConnect for SBD
+:partner-product-short-name: Iridium CloudConnect
+:partner-company-name: Iridium Satellite LLC
+:doc-month: July
 :doc-year: 2023
-:partner-contributors: John Smith, {partner-company-name}
+:partner-contributors: Jaco Botes, {partner-company-name}
 // :other-contributors: Akua Mansa, Trek10
-:aws-contributors: Janine Singh, AWS IoT Partner team
-:aws-ia-contributors: Toni Jones, AWS Integration & Automation team
-:deployment_time: 15 minutes
+//:aws-contributors: Janine Singh, AWS IoT Partner team
+:aws-ia-contributors: Andrew Glenn, AWS Integration & Automation team
+:deployment_time: 10 minutes
 :default_deployment_region: us-east-1
 // :private_repo:
 

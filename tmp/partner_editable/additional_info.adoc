@@ -1,10 +1,6 @@
-// Include any postdeployment steps here, such as steps necessary to test that the deployment was successful. If there are no postdeployment steps, leave this file empty.
+// Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
+//Should any sections not be applicable, remove them
 
-[#postdeploy2]
-.Iridium CloudConnect outputs after successful deployment
-image::../docs/deployment_guide/images/cfn_outputs.png[Postdeploy]
-
-== Postdeployment steps
 
 === Interacting with your Amazon SQS queues
 
